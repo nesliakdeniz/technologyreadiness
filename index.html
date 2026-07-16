@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ag Technology: Are You Ready?</title>
+<title>Ag Tech Ready</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --red: #C5050C;
@@ -15,7 +15,6 @@
     --muted: #4a4a4a;
     --line: #cfcfcf;
     --grid: #e2e2e2;
-    --flag: #C5050C;
     --bg: #ffffff;
     --panel: #f7f6f4;
     --flag-bg: #fbeceb;
@@ -26,222 +25,284 @@
   * { box-sizing: border-box; }
 
   html, body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg);
-    color: var(--ink);
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--ink);
     font-family: "Red Hat Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    font-size: 17px; font-weight: 500; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
 
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px 80px; }
-
-  /* Header */
-  .topbar {
-    border-top: 6px solid var(--red);
-    background: #fff;
-    border-bottom: 1px solid var(--line);
-  }
-  .topbar .inner {
-    max-width: 1120px; margin: 0 auto; padding: 16px 20px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .crest {
-    width: 40px; height: 40px; flex: 0 0 40px;
-    border-radius: 50%;
-    background: var(--red);
-    color: #fff;
-    display: grid; place-items: center;
-    font-family: "Red Hat Display", sans-serif;
-    font-weight: 900; font-size: 22px;
-  }
-  .brand-lines { line-height: 1.15; }
-  .brand-lines .b1 { font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 20px; color: var(--red); }
-  .brand-lines .b2 { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .wrap { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
 
   /* Hero */
-  .hero { padding: 48px 0 8px; }
+  .hero { padding: 44px 0 4px; }
   .hero h1 {
-    font-family: "Red Hat Display", sans-serif;
-    font-weight: 900;
-    font-size: clamp(28px, 4.4vw, 44px);
-    line-height: 1.05;
-    margin: 0 0 8px;
-    color: var(--red);
-    letter-spacing: -0.01em;
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    font-size: clamp(28px, 4.4vw, 42px); line-height: 1.05;
+    margin: 0 0 8px; color: var(--red); letter-spacing: -0.01em;
   }
-  .hero .sub { font-style: italic; color: var(--muted); font-size: 18px; margin: 0 0 20px; }
-  .hero p.lead { max-width: 760px; margin: 0 0 6px; color: #3a3a3a; }
-  .hero p.lead strong { color: var(--ink); }
-
-  /* Layout: readiness wheel */
-  .board {
-    display: flex;
-    justify-content: center;
-    margin: 32px 0 8px;
-  }
-  .wheel-card { max-width: 580px; width: 100%; }
+  .hero .sub { font-style: italic; color: var(--muted); font-size: 18px; margin: 0 0 18px; }
+  .hero p.lead { margin: 0; color: #3a3a3a; }
 
   .card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: var(--shadow);
   }
 
-  .wheel-card { padding: 22px 22px 12px; }
-  .wheel-card h2 { font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 2px; }
-  .wheel-card .hint { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
-  .canvas-holder { width: 100%; max-width: 520px; margin: 0 auto; }
-  canvas { width: 100%; height: auto; display: block; }
-
-  .legend {
-    display: flex; flex-wrap: wrap; gap: 6px 16px;
-    padding: 6px 4px 12px; font-size: 13.5px; color: var(--muted);
+  /* Tabs */
+  .tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--line); margin: 26px 0 0; }
+  .tab {
+    font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 19px;
+    padding: 18px 30px; border: 0; background: none; color: var(--muted);
+    cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -2px;
+    display: flex; align-items: center; gap: 10px; border-radius: 10px 10px 0 0;
   }
-  .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-  .legend .plotted { background: #9b9b9b; }
-  .legend .flagdot { background: var(--red); width: 12px; height: 12px; box-shadow: 0 0 0 2px rgba(197,5,12,0.25); }
-  .legend .thresh { width: 14px; height: 0; border-top: 2px solid var(--ink); border-radius: 0; }
-  .legend .legflag { vertical-align: middle; margin-right: 5px; margin-left: -2px; }
+  .tab:hover { color: var(--red); background: #faf7f7; }
+  .tab.on { color: var(--red); border-bottom-color: var(--red); }
+  .tab:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: -3px; }
+  .tabcount {
+    display: none; font-size: 13px; font-weight: 800; color: #fff; background: var(--red);
+    border-radius: 12px; padding: 2px 9px; letter-spacing: 0.02em;
+  }
+  .tabcount.show { display: inline-block; }
+  @media (max-width: 560px) {
+    .tab { font-size: 16px; padding: 14px 16px; flex: 1; justify-content: center; }
+  }
 
-  /* Progress panel */
-  .side { padding: 18px 18px 20px; }
-  .side h3 { font-family: "Red Hat Display", sans-serif; font-size: 15px; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
-  .prog-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed var(--grid); font-size: 14px; }
-  .prog-row:last-of-type { border-bottom: 0; }
-  .prog-row .nm { display: flex; align-items: center; gap: 8px; }
-  .prog-row .swatch { width: 9px; height: 9px; border-radius: 2px; flex: 0 0 9px; }
-  .prog-row .val { font-variant-numeric: tabular-nums; font-weight: 700; }
-  .prog-row .val.none { color: #bbb; font-weight: 500; }
-  .prog-row .val.flag { color: var(--red); }
-  .prog-row .val.good { color: var(--ok); }
-  .prog-row.flagged { background: var(--flag-bg); margin: 0 -18px; padding: 7px 18px; border-radius: 6px; border-bottom-color: transparent; }
-  .prog-row.flagged .nm { font-weight: 700; }
-  .prog-row .tag { display: none; font-size: 10px; font-weight: 800; color: #fff; background: var(--red); padding: 1px 6px; border-radius: 10px; margin-left: 7px; text-transform: uppercase; letter-spacing: 0.03em; }
-  .prog-row.flagged .tag { display: inline-block; }
-  .completion { margin-top: 14px; font-size: 13px; color: var(--muted); }
-  .completion .bar { height: 6px; border-radius: 3px; background: var(--grid); overflow: hidden; margin-top: 6px; }
-  .completion .bar span { display: block; height: 100%; background: var(--red); width: 0%; transition: width .3s ease; }
+  /* Review mode */
+  .reviewbar[hidden] { display: none !important; }
+  .reviewbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: var(--panel); border: 1px solid var(--line); border-left: 6px solid var(--red);
+    border-radius: 12px; padding: 16px 20px; margin: 24px 0 18px;
+    position: sticky; top: 10px; z-index: 5;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .reviewbar .rb-text strong {
+    display: block; font-family: "Red Hat Display", sans-serif; font-size: 18px; color: var(--ink);
+  }
+  .reviewbar .rb-text span { font-size: 14px; color: var(--muted); }
+  #cats.reviewing .cat { margin-bottom: 18px; }
+  .cat.flagged { border-color: var(--red); box-shadow: 0 0 0 2px var(--red), 0 6px 20px rgba(197,5,12,0.14); }
+  .cat.flagged .cat-head .ttl { color: var(--red); }
+
+  /* Resources tab */
+  .reslead { color: var(--muted); margin: 22px 0 20px; }
+  .resgroup { margin-bottom: 16px; padding: 18px 20px; }
+  .resgroup.flagged { border-color: var(--red); box-shadow: 0 0 0 2px var(--red), 0 6px 20px rgba(197,5,12,0.14); background: #fffafa; }
+  .resgroup h3 {
+    font-family: "Red Hat Display", sans-serif; font-size: 18px; margin: 0 0 2px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .resgroup.flagged h3 { color: var(--red); }
+  .resgroup .fl {
+    font-size: 10.5px; font-weight: 800; color: #fff; background: var(--red);
+    padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .resgroup .sc { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .resgroup .why { font-size: 13.5px; color: var(--muted); margin: 0 0 10px; }
+  .reslink { display: block; padding: 9px 0; border-top: 1px solid var(--grid); text-decoration: none; }
+  .reslink:first-of-type { border-top: 1px solid var(--grid); }
+  .reslink .t { color: var(--red); font-weight: 700; font-size: 15px; text-decoration: none; }
+  .reslink:hover .t { text-decoration: underline; }
+  .reslink .d { color: var(--muted); font-size: 13.5px; display: block; margin-top: 1px; }
+  .reslink .pdf { font-size: 10px; font-weight: 800; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; }
+
+  .askbox { padding: 20px 22px; margin-top: 24px; background: var(--panel); }
+  .askbox h3 { font-family: "Red Hat Display", sans-serif; font-size: 17px; margin: 0 0 4px; }
+  .askbox p { margin: 0 0 6px; font-size: 14.5px; color: var(--muted); }
+  .askbox .asklinks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 8px; }
+  .askbox a { color: var(--red); font-weight: 700; }
+
+  .res-jump {
+    display: inline-block; margin-top: 10px; font-size: 13.5px; font-weight: 700;
+    color: var(--red); background: none; border: 0; padding: 0; cursor: pointer;
+    font-family: inherit; text-decoration: underline;
+  }
+
+  /* Progress */
+  .progress { margin: 26px 0 18px; }
+  .prog-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px; gap: 12px;
+  }
+  .prog-top .step {
+    font-family: "Red Hat Display", sans-serif; font-weight: 700;
+    font-size: 15px; color: var(--ink);
+  }
+  .prog-top .pct { font-size: 15px; font-weight: 700; color: var(--red); font-variant-numeric: tabular-nums; }
+  .pbar { height: 10px; border-radius: 6px; background: var(--grid); overflow: hidden; }
+  .pbar span {
+    display: block; height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--red), #e0393f);
+    border-radius: 6px; transition: width .35s ease;
+  }
+  .dots { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .dots i {
+    height: 5px; flex: 1 1 0; min-width: 10px; border-radius: 3px;
+    background: var(--grid); transition: background .25s ease;
+  }
+  .dots i.done { background: var(--red); }
+  .dots i.now { background: #f0a6a9; }
 
   /* Scale key */
   .scalekey {
-    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    display: flex; flex-wrap: nowrap; gap: 0 12px;
     background: var(--panel); border: 1px solid var(--line);
-    border-radius: 12px; padding: 14px 18px; margin: 8px 0 26px;
-    font-size: 15px; color: var(--muted); align-items: center;
+    border-radius: 12px; padding: 11px 14px; margin: 0 0 18px;
+    font-size: 14px; color: var(--muted); align-items: center;
+    justify-content: space-between;
   }
-  .scalekey .sk-label { font-weight: 700; color: var(--ink); }
-  .scalekey b { color: #fff; background: var(--red); border-radius: 5px; padding: 1px 8px; margin-right: 3px; font-weight: 700; }
-
-  /* Category cards */
-  .cats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  @media (max-width: 780px) { .cats { grid-template-columns: 1fr; } }
-
-  .cat { padding: 18px 18px 14px; scroll-margin-top: 16px; transition: box-shadow .15s ease, background .15s ease; }
-  .cat.flagged {
-    border-color: var(--red);
-    background: var(--flag-bg);
-    box-shadow: 0 0 0 3px var(--red), 0 6px 20px rgba(197,5,12,0.18);
+  .scalekey span { white-space: nowrap; }
+  .scalekey .sk-label { font-weight: 700; color: var(--ink); flex: 0 0 auto; }
+  .scalekey b {
+    color: #fff; background: var(--red); border-radius: 5px;
+    padding: 1px 6px; margin-right: 4px; font-weight: 700; font-size: 13px;
   }
-  .cat.flagged .cat-head .ttl { color: var(--red); }
-  .cat-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
-  .cat-head .idx { font-family: "Red Hat Display", sans-serif; font-weight: 900; color: var(--red); font-size: 16px; }
-  .cat-head .ttl { font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 18px; flex: 1; color: var(--ink); }
-  .cat-head .avg { font-size: 13px; color: var(--muted); white-space: nowrap; }
-  .cat-head .avg b { font-size: 17px; }
-  .cat-head .avg.flag b { color: var(--red); }
-  .cat-head .avg.good b { color: var(--ok); }
-
-  /* Flag badge */
-  .flag-pill {
-    display: none; align-items: center; gap: 6px;
-    background: var(--red); color: #fff; font-size: 13px; font-weight: 800;
-    font-family: "Red Hat Text", sans-serif; letter-spacing: 0.04em;
-    padding: 5px 13px 5px 10px; border-radius: 20px; margin-top: 8px; width: fit-content;
-    text-transform: uppercase; box-shadow: 0 2px 8px rgba(197,5,12,0.35);
+  @media (max-width: 700px) {
+    .scalekey { flex-wrap: wrap; gap: 8px 14px; justify-content: flex-start; }
+    .scalekey .sk-label { flex: 1 0 100%; }
   }
-  .flag-pill::before { content: "!"; display: inline-grid; place-items: center; width: 17px; height: 17px; background: #fff; color: var(--red); border-radius: 50%; font-size: 12px; font-weight: 900; }
-  .cat.flagged .flag-pill { display: inline-flex; }
 
-  .stmt { padding: 12px 0 14px; border-top: 1px solid var(--grid); }
-  .stmt:first-of-type { border-top: 0; }
-  .stmt .q { font-size: 16px; line-height: 1.5; color: var(--ink); margin-bottom: 10px; }
-  .seg { display: flex; gap: 6px; }
+  /* Category card */
+  .cat { padding: 24px 24px 20px; display: none; }
+  .cat.active { display: block; }
+  .cat-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+  .cat-head .idx {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    color: #fff; background: var(--red); font-size: 14px;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-grid; place-items: center; flex: 0 0 28px;
+  }
+  .cat-head .ttl { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 24px; color: var(--ink); }
+  .cat-sub { font-size: 14.5px; color: var(--muted); margin: 0 0 6px 38px; }
+
+  .stmt { padding: 16px 0 18px; border-top: 1px solid var(--grid); }
+  .stmt .q { font-size: 16.5px; line-height: 1.5; color: var(--ink); margin-bottom: 10px; }
+  .stmt.unrated .q::after {
+    content: "required"; font-size: 11px; font-weight: 800; text-transform: uppercase;
+    color: var(--red); background: var(--flag-bg); border: 1px solid #f3cfd0;
+    padding: 1px 7px; border-radius: 10px; margin-left: 8px; letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .seg { display: flex; gap: 8px; }
   .seg button {
-    flex: 1; padding: 11px 0; border: 1px solid var(--line); background: #fff;
-    border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700;
-    color: #6a6a6a; cursor: pointer; transition: all .12s ease;
+    flex: 1; padding: 13px 0; border: 1px solid var(--line); background: #fff;
+    border-radius: 10px; font-family: inherit; font-size: 17px; font-weight: 700;
+    color: #6a6a6a; cursor: pointer; transition: all .12s ease; line-height: 1.1;
   }
+  .seg button small { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.02em; margin-top: 3px; color: #9a9a9a; }
   .seg button:hover { border-color: var(--red); color: var(--red); }
+  .seg button:hover small { color: var(--red); }
   .seg button.on { background: var(--red); border-color: var(--red); color: #fff; }
+  .seg button.on small { color: #fff; }
   .seg button:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: 1px; }
+  @media (max-width: 560px) { .seg button small { display: none; } }
+
+  .cat-avg {
+    margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--grid);
+    font-size: 14px; color: var(--muted); display: flex; justify-content: space-between; align-items: center;
+  }
+  .cat-avg b { font-family: "Red Hat Display", sans-serif; font-size: 20px; color: var(--ink); }
+  .cat-avg.flag b { color: var(--red); }
+  .cat-avg.good b { color: var(--ok); }
+  .cat-avg .note { font-size: 12.5px; }
+
+  /* Nav */
+  .nav { display: flex; align-items: center; gap: 14px; margin-top: 20px; }
+  .nav .spacer { flex: 1; }
+  .btn {
+    font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 16px;
+    padding: 13px 26px; border-radius: 10px; cursor: pointer; border: 2px solid var(--red);
+    transition: all .12s ease;
+  }
+  .btn.primary { background: var(--red); color: #fff; }
+  .btn.primary:hover:not(:disabled) { background: var(--red-dark); border-color: var(--red-dark); }
+  .btn.ghost { background: #fff; color: var(--red); }
+  .btn.ghost:hover { background: var(--flag-bg); }
+  .btn:disabled { background: #e9e9e9; border-color: #dcdcdc; color: #a5a5a5; cursor: not-allowed; }
+  .btn:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: 2px; }
 
   /* Results */
-  .results { margin-top: 40px; }
+  .results { display: none; }
+  .results.active { display: block; }
   .results > h2 {
     font-family: "Red Hat Display", sans-serif; font-weight: 900;
-    font-size: 26px; color: var(--red); margin: 0 0 6px;
+    font-size: 30px; color: var(--red); margin: 24px 0 6px;
   }
-  .results .rlead { color: var(--muted); margin: 0 0 20px; max-width: 720px; }
+  .results .rlead { color: var(--muted); margin: 0 0 22px; }
+
+  .wheel-card { padding: 22px 22px 12px; margin-bottom: 26px; }
+  .wheel-card h3 { font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 2px; }
+  .wheel-card .hint { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+  .canvas-holder { width: 100%; max-width: 520px; margin: 0 auto; }
+  canvas { width: 100%; height: auto; display: block; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 6px 4px 8px; font-size: 13.5px; color: var(--muted); }
+  .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .legend .plotted { background: #9b9b9b; }
+  .legend .thresh { width: 14px; height: 0; border-top: 2px solid var(--ink); border-radius: 0; }
+  .legend .legflag { vertical-align: middle; margin-right: 5px; }
 
   .flagcard { padding: 18px 22px; margin-bottom: 16px; border-left: 8px solid var(--red); background: var(--flag-bg); border-radius: 0 12px 12px 0; box-shadow: 0 3px 14px rgba(197,5,12,0.12); }
   .flagcard h3 { font-family: "Red Hat Display", sans-serif; font-size: 19px; color: var(--red); margin: 0 0 4px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
   .flagcard h3 .sc { font-size: 14px; color: #fff; background: var(--red); padding: 2px 10px; border-radius: 20px; font-weight: 800; white-space: nowrap; }
+  .flagcard .glabel { font-size: 13.5px; color: var(--muted); margin-bottom: 2px; }
   .flagcard ul { margin: 8px 0 0; padding-left: 20px; }
   .flagcard li { font-size: 14.5px; margin: 4px 0; color: #40302f; }
 
-  .allgood { padding: 28px; text-align: center; border-radius: 14px; background: #eef7ee; border: 1px solid #cfe6cf; color: #245c27; }
+  .allgood { padding: 28px; text-align: center; border-radius: 14px; background: #eef7ee; border: 1px solid #cfe6cf; color: #245c27; margin-bottom: 16px; }
   .allgood b { font-family: "Red Hat Display", sans-serif; font-size: 18px; }
 
-  .reflect { margin-top: 30px; padding: 22px 22px 8px; }
+  .reflect { margin-top: 26px; padding: 22px 22px 10px; }
   .reflect h3 { font-family: "Red Hat Display", sans-serif; font-size: 18px; margin: 0 0 4px; }
   .reflect p.rl { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
-  .reflect label { display: block; font-size: 14px; font-weight: 600; margin: 14px 0 5px; }
+  .reflect label { display: block; font-size: 14px; font-weight: 700; margin: 14px 0 5px; }
   .reflect textarea {
-    width: 100%; min-height: 60px; resize: vertical; padding: 10px 12px;
+    width: 100%; min-height: 58px; resize: vertical; padding: 10px 12px;
     border: 1px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
   }
   .reflect textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(197,5,12,0.15); }
 
-  /* Actions */
-  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 34px 0 0; }
-  .btn {
-    font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 15px;
-    padding: 12px 22px; border-radius: 10px; cursor: pointer; border: 2px solid var(--red);
-  }
-  .btn.primary { background: var(--red); color: #fff; }
-  .btn.primary:hover { background: var(--red-dark); border-color: var(--red-dark); }
-  .btn.ghost { background: #fff; color: var(--red); }
-  .btn.ghost:hover { background: var(--flag-bg); }
-  .btn:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: 2px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 0; }
 
-  /* Footer resources */
-  .foot { margin-top: 46px; padding: 22px 24px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  /* Summary table (print + results) */
+  .summary { margin-top: 26px; padding: 20px 22px; }
+  .summary h3 { font-family: "Red Hat Display", sans-serif; font-size: 18px; margin: 0 0 12px; }
+  .srow { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--grid); font-size: 15px; }
+  .srow:last-child { border-bottom: 0; }
+  .srow .nm { display: flex; align-items: center; gap: 8px; }
+  .srow .v { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .srow.flag { color: var(--red); font-weight: 700; }
+  .srow.flag .v { color: var(--red); }
+  .srow .fl { font-size: 10px; font-weight: 800; color: #fff; background: var(--red); padding: 1px 7px; border-radius: 10px; text-transform: uppercase; }
+
+  .foot { margin-top: 44px; padding: 20px 22px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
   .foot a { color: var(--red); font-weight: 600; }
   .foot .credit { font-size: 12px; margin-top: 12px; line-height: 1.4; }
 
   .print-only { display: none; }
 
-  /* Print / PDF */
   @media print {
     @page { margin: 14mm; }
     body { font-size: 12px; }
-    .topbar { border-top-width: 4px; }
-    .no-print, .scalekey, .seg, .actions, .foot .credit { display: none !important; }
-    .board { display: flex; justify-content: center; page-break-inside: avoid; }
-    .wheel-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; max-width: 480px; }
-    .cats { grid-template-columns: 1fr 1fr; }
-    .cat { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
-    .cat .seg { display: none; }
-    .print-only { display: block; }
-    .stmt .picked { font-weight: 700; color: var(--red); }
-    .flagcard { page-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .card, .flagcard, .allgood { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .wrap { max-width: none; padding: 0; }
+    .progress, .nav, .scalekey, .seg, .actions, .foot .credit, .hero p.lead, .tabs, .res-jump, .reviewbar { display: none !important; }
+    #paneAssess, #paneRes { display: block !important; }
+    #paneRes[hidden] { display: block !important; }
+    .foot { display: block !important; }
+    .resgroup { page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+    .reslink .d { font-size: 11px; }
+    .reslink .t::after { content: " (" attr(href) ")"; font-weight: 500; font-size: 10px; color: #666; word-break: break-all; }
+    .cat { display: block !important; page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; margin-bottom: 10px; padding: 12px 14px; }
+    .cat-head .ttl { font-size: 16px; }
+    .stmt { padding: 6px 0 7px; }
+    .stmt .q { font-size: 12px; margin-bottom: 2px; }
+    .stmt.unrated .q::after { display: none; }
+    .print-only { display: block; font-size: 11.5px; }
+    .results { display: block !important; }
+    .wheel-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; max-width: 480px; margin: 0 auto 14px; }
+    .flagcard, .summary, .allgood { page-break-inside: avoid; }
+    .card, .flagcard, .allgood, .cat { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .reflect textarea { border: 1px solid #ccc; }
   }
 </style>
@@ -251,13 +312,29 @@
 <div class="wrap">
 
   <section class="hero">
-    <h1>Ag Technology: Are You Ready?</h1>
+    <h1>Ag Tech Ready</h1>
     <p class="sub">A worksheet to assess your readiness to adopt new technology</p>
-    <p class="lead">Adopting new technology can be a big investment. When done well, it can improve efficiency and profits. When done poorly, it can be costly. <strong>Rate each statement below. Your category averages plot on the Technology Readiness Wheel as you go, and any category that averages 3 or lower is flagged as an area that may benefit from further learning, planning, or support.</strong></p>
+    <p class="lead" id="lead">Adopting new technology can be a big investment. When done well, it can improve efficiency and profits. When done poorly, it can be costly. Work through the nine categories one at a time. Rate every statement, and your results appear at the end.</p>
   </section>
 
-  <div class="scalekey no-print">
-    <span class="sk-label">Rate each statement:</span>
+  <div class="tabs" role="tablist">
+    <button class="tab on" id="tabAssessBtn" type="button" role="tab">Assessment</button>
+    <button class="tab" id="tabResBtn" type="button" role="tab">Extension Resources <span class="tabcount" id="tabCount"></span></button>
+  </div>
+
+  <div id="paneAssess">
+
+  <div class="progress" id="progress">
+    <div class="prog-top">
+      <span class="step" id="stepLabel">Step 1 of 9</span>
+      <span class="pct" id="pctLabel">0% complete</span>
+    </div>
+    <div class="pbar"><span id="pbarFill"></span></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <div class="scalekey" id="scalekey">
+    <span class="sk-label">Rate:</span>
     <span><b>1</b> Not at all</span>
     <span><b>2</b> Minimally</span>
     <span><b>3</b> Moderately</span>
@@ -265,25 +342,43 @@
     <span><b>5</b> Completely</span>
   </div>
 
-  <div class="cats" id="cats"></div>
-
-  <div class="board">
-    <div class="card wheel-card">
-      <h2>Technology Readiness Wheel</h2>
-      <p class="hint">Averages update live. The bold ring marks the score of 3 threshold. Points inside it are flagged.</p>
-      <div class="canvas-holder"><canvas id="wheel" width="600" height="600"></canvas></div>
-      <div class="legend">
-        <span><span class="dot plotted"></span>Your average</span>
-        <span><span class="dot flagdot"></span><svg class="legflag" viewBox="0 0 12 14" width="11" height="13" aria-hidden="true"><line x1="1.5" y1="1" x2="1.5" y2="13" stroke="#5a5a5a" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 1 L10 3 Q6 4 1.5 5 Z" fill="#C5050C"/></svg>Flagged (3 or lower)</span>
-        <span><span class="dot thresh"></span>Threshold (3)</span>
-      </div>
+  <div class="reviewbar" id="reviewbar" hidden>
+    <div class="rb-text">
+      <strong>Reviewing all your answers</strong>
+      <span>Change any rating and your results update automatically.</span>
     </div>
+    <button class="btn primary" id="backToResults" type="button">Back to results</button>
+  </div>
+
+  <div id="cats"></div>
+
+  <div class="nav" id="nav">
+    <button class="btn ghost" id="backBtn" type="button">Back</button>
+    <span class="spacer"></span>
+    <button class="btn primary" id="nextBtn" type="button">Next</button>
   </div>
 
   <section class="results" id="results">
     <h2>Your results</h2>
-    <p class="rlead">Categories that average 3 or lower show below with guiding questions to help you prepare for a more successful and profitable transition.</p>
-    <div id="flagged"></div>
+    <p class="rlead">Any category that averages 3 or lower is flagged as an area that may benefit from further learning, planning, or support.</p>
+
+    <div class="card wheel-card">
+      <h3>Technology Readiness Wheel</h3>
+      <p class="hint">The bold ring marks the score of 3 threshold. Points inside it are flagged.</p>
+      <div class="canvas-holder"><canvas id="wheel" width="600" height="600"></canvas></div>
+      <div class="legend">
+        <span><span class="dot plotted"></span>Your average</span>
+        <span><svg class="legflag" viewBox="0 0 12 14" width="11" height="13" aria-hidden="true"><line x1="1.5" y1="1" x2="1.5" y2="13" stroke="#5a5a5a" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 1 L10 3 Q6 4 1.5 5 Z" fill="#C5050C"/></svg>Flagged (3 or lower)</span>
+        <span><span class="dot thresh"></span>Threshold (3)</span>
+      </div>
+    </div>
+
+    <div class="card summary">
+      <h3>Category averages</h3>
+      <div id="summaryList"></div>
+    </div>
+
+    <div id="flagged" style="margin-top:26px;"></div>
 
     <div class="card reflect">
       <h3>Reflection questions to help you move forward</h3>
@@ -298,13 +393,30 @@
       <textarea data-rk="who"></textarea>
     </div>
 
-    <div class="actions no-print">
-      <button class="btn primary" id="printBtn">Save or print my results</button>
-      <button class="btn ghost" id="resetBtn">Start over</button>
+    <div class="actions">
+      <button class="btn primary" id="printBtn" type="button">Save or print my results</button>
+      <button class="btn ghost" id="reviewBtn" type="button">Review my answers</button>
+      <button class="btn ghost" id="resetBtn" type="button">Start over</button>
     </div>
   </section>
 
-  <div class="foot">
+  </div><!-- /paneAssess -->
+
+  <div id="paneRes" hidden>
+    <p class="reslead">Research-based resources from UW&ndash;Madison Extension to help you address each category. Once you finish the assessment, your flagged categories move to the top of this list.</p>
+    <div id="resList"></div>
+    <div class="card askbox">
+      <h3>Still have questions?</h3>
+      <p>Extension educators across Wisconsin can talk through your specific situation at no cost.</p>
+      <p class="asklinks">
+        <a href="https://extension.wisc.edu/agriculture/ask-an-agriculture-question/">Ask an agriculture question</a>
+        <a href="https://counties.extension.wisc.edu/">Find your county Extension office</a>
+        <a href="mailto:farms@extension.wisc.edu">farms@extension.wisc.edu</a>
+      </p>
+    </div>
+  </div><!-- /paneRes -->
+
+  <div class="foot" id="foot">
     <strong>How to use your results.</strong> If any category averages 3 or below, use its guiding questions to identify what information or planning you still need. For a complete list of questions and additional resources, visit <a href="https://farms.extension.wisc.edu/technology">farms.extension.wisc.edu/technology</a>.
     <div class="credit">Developed by Kevin Bernhardt, Farm Management Specialist, and the Automation Working Group (Stephanie Plaster, Carolina Pinz&oacute;n, Katelyn Goldsmith, John Shutske, Angie Ulness, Jackie McCarville, Leonard Polzin, Kelly Wilfert, Nesli Akdeniz) with the UW&ndash;Madison Division of Extension.</div>
   </div>
@@ -376,7 +488,7 @@ const CATEGORIES = [
     ]
   },
   {
-    key: "labor", label: "Labor/Training",
+    key: "labor", label: "Labor and Training",
     statements: [
       "I am aware of necessary safety measures and staff training needs.",
       "I understand the impact on payroll and labor savings.",
@@ -421,7 +533,7 @@ const CATEGORIES = [
     ]
   },
   {
-    key: "stake", label: "Stakeholder Mgt",
+    key: "stake", label: "Stakeholder Management",
     statements: [
       "I gathered feedback from employees, peers, advisors, and regulators.",
       "I understand environmental, regulatory, and insurance coverage impacts.",
@@ -452,12 +564,71 @@ const CATEGORIES = [
 ];
 
 const SCALE = ["Not at all", "Minimally", "Moderately", "Sufficiently", "Completely"];
+
+/* ---------- UW-Madison Extension resources (verified links) ---------- */
+const AUTOMATION_HUB = { t: "Agriculture Automation: Embracing Technology in Farming", u: "https://farms.extension.wisc.edu/technology/", d: "Extension's hub of real-farm examples, articles, and tools on ag automation." };
+const RIGHT_QUESTIONS = { t: "Adopting New Technology: Start with the Right Questions", u: "https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/", d: "The companion article to this worksheet. The best place to begin." };
+const HARNESSING = { t: "Harnessing the Power of Ag Tech: What Farms Need to Know", u: "https://farms.extension.wisc.edu/articles/harnessing-the-power-of-ag-tech-what-farms-need-to-know/", d: "First in a series on key considerations for technology and automation investment." };
+const STRATEGY = { t: "Setting Your Technology Investment Strategy", u: "https://farms.extension.wisc.edu/articles/setting-your-technology-investment-strategy/", d: "Weighing the opportunities against the risks and large costs." };
+const FUTURE = { t: "Embracing Technology in Farming: What to Think About for the Future", u: "https://farms.extension.wisc.edu/articles/embracing-technology-in-farming-what-to-think-about-for-the-future/", d: "Looking ahead at robots, automated equipment, and self-driving machines." };
+const BALANCING = { t: "Balancing Technology and People: The Evolving Role of Farm Workers", u: "https://farms.extension.wisc.edu/articles/balancing-technology-and-people-the-evolving-role-of-farm-workers-in-automation/", d: "What changes for you, family members, and hired employees." };
+const WIEGEL = { t: "Farm story: Wiegel Riverside Dairy", u: "https://farms.extension.wisc.edu/files/2025/01/WIEGEL-Farm-Story-web.pdf", d: "Why they installed robots, results, lessons learned, and advice.", pdf: true };
+const JENLAR = { t: "Farm story: Jenlar Holsteins and Brown Swiss", u: "https://farms.extension.wisc.edu/files/2025/01/JENLAR-Farm-Story-web.pdf", d: "A second producer's experience with robotic milking.", pdf: true };
+const ASK = { t: "Ask an agriculture question", u: "https://extension.wisc.edu/agriculture/ask-an-agriculture-question/", d: "Put your question to an Extension specialist." };
+const COUNTY = { t: "Find your county Extension office", u: "https://counties.extension.wisc.edu/", d: "Local educators who can talk through your situation." };
+const DAIRY_EMERGING = { t: "Emerging Technologies and Facilities for Dairy Operations", u: "https://dairy.extension.wisc.edu/article-topic/emerging-technologies-and-facilities/", d: "Resources for upgrading barns, parlors, and equipment." };
+const DAIRY_HOME = { t: "Dairy Extension", u: "https://dairy.extension.wisc.edu/", d: "Full dairy program: management, facilities, and herd resources." };
+
+const RESOURCES = {
+  goals: [ RIGHT_QUESTIONS, FUTURE, STRATEGY,
+    { t: "Business Development, Transition and Succession", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Tie the decision to your long-term business and family strategy." } ],
+  cost: [
+    { t: "Before You Buy: A Farm Tech Investment Planning Guide", u: "https://farms.extension.wisc.edu/articles/before-you-buy-a-farm-tech-investment-planning-guide/", d: "Build the plan before the purchase: costs, payback, and pitfalls." },
+    { t: "Making the Switch to Robots: AMS Transition Budgeter", u: "https://dairy.extension.wisc.edu/articles/making-the-switch-to-robots-a-new-budgeting-tool-for-transitioning-to-automatic-milking-systems/", d: "A web-based tool to model the long-term finances of going robotic." },
+    STRATEGY,
+    { t: "Financial Management", u: "https://farms.extension.wisc.edu/article-topic/financial-strategic-management/", d: "Budgeting, ROI, and financial decision-making resources." },
+    { t: "Farm Pulse: Financial Management", u: "https://farms.extension.wisc.edu/programs/farm-pulse/", d: "Extension program to sharpen farm financial skills." } ],
+  infra: [ DAIRY_EMERGING, DAIRY_HOME, HARNESSING,
+    { t: "Crops and Soils Extension", u: "https://cropsandsoils.extension.wisc.edu/", d: "Field-side infrastructure, equipment, and agronomy resources." },
+    { t: "Livestock Extension", u: "https://livestock.extension.wisc.edu/", d: "Facilities and systems resources for livestock operations." } ],
+  connect: [
+    { t: "Broadband: access, adoption, and digital inclusion", u: "https://economicdevelopment.extension.wisc.edu/topics/broadband/", d: "Extension's broadband program, including rural access and farm profits." },
+    { t: "Broadband Toolkit", u: "https://economicdevelopment.extension.wisc.edu/broadband-toolkit/", d: "Modules on broadband basics, terminology, and Wisconsin context." },
+    HARNESSING,
+    { t: "Large Language Models: A Powerful New Tool for Wisconsin Agriculture", u: "https://farms.extension.wisc.edu/articles/large-language-models-a-powerful-new-tool-for-wisconsin-agriculture/", d: "How connected AI tools are reshaping agricultural work." } ],
+  labor: [ BALANCING,
+    { t: "Becoming the Employer of Choice", u: "https://farms.extension.wisc.edu/programs/becoming-the-employer-of-choice/", d: "Extension program on hiring, managing, and keeping good people." },
+    { t: "Human Resources", u: "https://farms.extension.wisc.edu/article-topic/human-resources/", d: "Payroll, training, and workforce planning resources." },
+    { t: "Safety and Health", u: "https://farms.extension.wisc.edu/topics/safety-health/", d: "Safety training and hazard resources for new equipment." } ],
+  support: [ WIEGEL, JENLAR, ASK, COUNTY, AUTOMATION_HUB ],
+  adapt: [ FUTURE, BALANCING, WIEGEL, AUTOMATION_HUB ],
+  stake: [
+    { t: "Ag Land Pricing and Contracts", u: "https://farms.extension.wisc.edu/article-topic/pricing-and-contracts/", d: "Contract terms and the fine print, including your data rights." },
+    { t: "Policy, Markets and Marketing", u: "https://farms.extension.wisc.edu/topics/policy-markets-marketing/", d: "Regulatory and market context for your decision." },
+    HARNESSING, ASK ],
+  prod: [ DAIRY_EMERGING, DAIRY_HOME, HARNESSING, AUTOMATION_HUB ]
+};
+
+const RES_WHY = {
+  goals: "Clarify why you are adopting, and how it fits your long-term strategy.",
+  cost: "Pin down total cost, payback, and how ROI shifts with productivity.",
+  infra: "Check compatibility, resource needs, and backup plans.",
+  connect: "Confirm your internet service, data handling, and system fit.",
+  labor: "Plan training, safety, payroll impacts, and who leads the rollout.",
+  support: "Vet the supplier, service terms, and what other farmers experienced.",
+  adapt: "Think through disruption, growth, and weather performance.",
+  stake: "Cover feedback, regulations, insurance, and contract and data rights.",
+  prod: "Plan the changes to practices, protocols, yield, inputs, and outputs."
+};
 const RED = "#C5050C";
+const TOTAL_STATEMENTS = CATEGORIES.length * 3; // 27
+const RESULTS_STEP = CATEGORIES.length;         // 9
 
-/* scores[categoryIndex] = [null|1..5, null|1..5, null|1..5] */
 const scores = CATEGORIES.map(() => [null, null, null]);
+let step = 0;
+let reviewMode = false;
 
-/* ---------- Build category cards ---------- */
+/* ---------- Build cards ---------- */
 const catsEl = document.getElementById("cats");
 CATEGORIES.forEach((cat, ci) => {
   const card = document.createElement("div");
@@ -466,20 +637,19 @@ CATEGORIES.forEach((cat, ci) => {
 
   const head = document.createElement("div");
   head.className = "cat-head";
-  head.innerHTML =
-    '<span class="idx">' + (ci + 1) + '</span>' +
-    '<span class="ttl">' + cat.label + '</span>' +
-    '<span class="avg" id="avg-' + cat.key + '">Avg <b>&ndash;</b></span>';
+  head.innerHTML = '<span class="idx">' + (ci + 1) + '</span><span class="ttl">' + cat.label + '</span>';
   card.appendChild(head);
 
-  const pill = document.createElement("div");
-  pill.className = "flag-pill";
-  pill.textContent = "Needs attention";
-  card.appendChild(pill);
+  const sub = document.createElement("p");
+  sub.className = "cat-sub";
+  sub.textContent = "How aware and ready am I? Rate all three statements.";
+  card.appendChild(sub);
 
   cat.statements.forEach((text, si) => {
     const stmt = document.createElement("div");
-    stmt.className = "stmt";
+    stmt.className = "stmt unrated";
+    stmt.id = "stmt-" + cat.key + "-" + si;
+
     const q = document.createElement("div");
     q.className = "q";
     q.textContent = text;
@@ -490,37 +660,104 @@ CATEGORIES.forEach((cat, ci) => {
     for (let v = 1; v <= 5; v++) {
       const b = document.createElement("button");
       b.type = "button";
-      b.textContent = v;
+      b.innerHTML = v + "<small>" + SCALE[v - 1] + "</small>";
       b.setAttribute("aria-label", v + " " + SCALE[v - 1]);
       b.addEventListener("click", () => {
         scores[ci][si] = (scores[ci][si] === v) ? null : v;
         renderSegState(seg, scores[ci][si]);
+        stmt.classList.toggle("unrated", scores[ci][si] === null);
         updateStmtPrint(stmt, scores[ci][si]);
-        recompute();
+        refresh();
       });
       seg.appendChild(b);
     }
     stmt.appendChild(seg);
 
     const pr = document.createElement("div");
-    pr.className = "print-only picked";
-    pr.textContent = "";
+    pr.className = "print-only";
+    pr.textContent = "Not rated";
     stmt.appendChild(pr);
 
     card.appendChild(stmt);
   });
 
+  const avg = document.createElement("div");
+  avg.className = "cat-avg";
+  avg.id = "avg-" + cat.key;
+  avg.innerHTML = '<span class="note">Category average</span><b>&ndash;</b>';
+  card.appendChild(avg);
+
   catsEl.appendChild(card);
 });
 
 function renderSegState(seg, val) {
-  Array.from(seg.children).forEach((btn, i) => {
-    btn.classList.toggle("on", (i + 1) === val);
-  });
+  Array.from(seg.children).forEach((btn, i) => btn.classList.toggle("on", (i + 1) === val));
 }
 function updateStmtPrint(stmt, val) {
-  const pr = stmt.querySelector(".print-only");
-  pr.textContent = val ? ("Rated: " + val + " (" + SCALE[val - 1] + ")") : "Not rated";
+  stmt.querySelector(".print-only").textContent =
+    val ? ("Rated: " + val + " (" + SCALE[val - 1] + ")") : "Not rated";
+}
+
+/* ---------- Progress dots ---------- */
+const dotsEl = document.getElementById("dots");
+CATEGORIES.forEach(() => dotsEl.appendChild(document.createElement("i")));
+
+/* The results footer belongs with the results only */
+function updateFoot() {
+  const resultsVisible = document.getElementById("results").classList.contains("active");
+  document.getElementById("foot").style.display = (resultsVisible && paneRes.hidden) ? "block" : "none";
+}
+
+/* ---------- Tabs ---------- */
+const paneAssess = document.getElementById("paneAssess");
+const paneRes = document.getElementById("paneRes");
+const tabAssessBtn = document.getElementById("tabAssessBtn");
+const tabResBtn = document.getElementById("tabResBtn");
+
+function showTab(which) {
+  const res = which === "res";
+  paneRes.hidden = !res;
+  paneAssess.hidden = res;
+  tabResBtn.classList.toggle("on", res);
+  tabAssessBtn.classList.toggle("on", !res);
+  if (res) renderResources();
+  else if (step >= RESULTS_STEP && !reviewMode) drawWheel();
+  updateFoot();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+tabAssessBtn.addEventListener("click", () => showTab("assess"));
+tabResBtn.addEventListener("click", () => showTab("res"));
+
+function renderResources() {
+  const host = document.getElementById("resList");
+  host.innerHTML = "";
+
+  // flagged categories first, each keeping its original number
+  const order = CATEGORIES.map((cat, ci) => ({ cat, ci, flagged: isFlagged(ci), avg: catAverage(ci) }));
+  order.sort((a, b) => (b.flagged - a.flagged) || (a.ci - b.ci));
+
+  order.forEach(({ cat, ci, flagged, avg }) => {
+    const g = document.createElement("div");
+    g.className = "card resgroup" + (flagged ? " flagged" : "");
+    let h = "<h3>" + cat.label;
+    if (flagged) h += ' <span class="fl">Needs attention</span>';
+    if (avg !== null && isComplete(ci)) h += ' <span class="sc">Your average ' + avg.toFixed(1) + "</span>";
+    h += "</h3>";
+    h += '<p class="why">' + RES_WHY[cat.key] + "</p>";
+    (RESOURCES[cat.key] || []).forEach(r => {
+      h += '<a class="reslink" href="' + r.u + '" target="_blank" rel="noopener">' +
+           '<span class="t">' + r.t + (r.pdf ? '<span class="pdf">PDF</span>' : "") + "</span>" +
+           '<span class="d">' + r.d + "</span></a>";
+    });
+    g.innerHTML = h;
+    host.appendChild(g);
+  });
+
+  // flag count badge on the tab
+  const n = CATEGORIES.filter((c, i) => isFlagged(i)).length;
+  const badge = document.getElementById("tabCount");
+  badge.textContent = n;
+  badge.classList.toggle("show", n > 0);
 }
 
 /* ---------- Compute ---------- */
@@ -529,47 +766,154 @@ function catAverage(ci) {
   if (vals.length === 0) return null;
   return vals.reduce((a, b) => a + b, 0) / vals.length;
 }
+function isComplete(ci) { return scores[ci].every(v => v !== null); }
+function isFlagged(ci) { const a = catAverage(ci); return isComplete(ci) && a <= 3; }
+function ratedCount() {
+  let n = 0;
+  scores.forEach(row => row.forEach(v => { if (v !== null) n++; }));
+  return n;
+}
+function allComplete() { return CATEGORIES.every((c, i) => isComplete(i)); }
 
-function recompute() {
-  CATEGORIES.forEach((cat, ci) => {
-    const avg = catAverage(ci);
-    const complete = scores[ci].every(v => v !== null);
-
-    // card header avg
-    const avgEl = document.getElementById("avg-" + cat.key);
-    const flagged = complete && avg <= 3;
-    avgEl.className = "avg" + (complete ? (avg <= 3 ? " flag" : " good") : "");
-    avgEl.innerHTML = "Avg <b>" + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</b>";
-
-    // card flag border only when fully rated
-    document.getElementById("cat-" + cat.key).classList.toggle("flagged", flagged);
-  });
-
-  renderFlagged();
-  drawWheel();
+function updateFlagBadge() {
+  const n = CATEGORIES.filter((c, i) => isFlagged(i)).length;
+  const badge = document.getElementById("tabCount");
+  badge.textContent = n;
+  badge.classList.toggle("show", n > 0);
 }
 
-/* ---------- Flagged results ---------- */
-function renderFlagged() {
+/* ---------- Render ---------- */
+function refresh() {
+  updateFlagBadge();
+  // per-card average readout
+  CATEGORIES.forEach((cat, ci) => {
+    const avg = catAverage(ci);
+    const el = document.getElementById("avg-" + cat.key);
+    const done = isComplete(ci);
+    el.className = "cat-avg" + (done ? (avg <= 3 ? " flag" : " good") : "");
+    const note = done
+      ? (avg <= 3 ? "Category average (needs attention)" : "Category average")
+      : "Category average (rate all three)";
+    el.innerHTML = '<span class="note">' + note + "</span><b>" + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</b>";
+    document.getElementById("cat-" + cat.key).classList.toggle("flagged", done && avg <= 3);
+  });
+
+  // progress
+  const rated = ratedCount();
+  const pct = Math.round((rated / TOTAL_STATEMENTS) * 100);
+  document.getElementById("pbarFill").style.width = pct + "%";
+  document.getElementById("pctLabel").textContent = pct + "% complete";
+  document.getElementById("stepLabel").textContent =
+    step >= RESULTS_STEP ? "Results" : "Step " + (step + 1) + " of " + CATEGORIES.length + ": " + CATEGORIES[step].label;
+
+  Array.from(dotsEl.children).forEach((d, i) => {
+    d.className = isComplete(i) ? "done" : (i === step ? "now" : "");
+  });
+
+  // nav state
+  const nextBtn = document.getElementById("nextBtn");
+  const backBtn = document.getElementById("backBtn");
+  if (step < RESULTS_STEP) {
+    const done = isComplete(step);
+    nextBtn.disabled = !done;
+    nextBtn.textContent = (step === RESULTS_STEP - 1) ? "See my results" : "Next";
+    backBtn.disabled = step === 0;
+  }
+}
+
+function showStep(n) {
+  reviewMode = false;
+  const rb = document.getElementById("reviewbar");
+  rb.hidden = true; rb.style.display = "none";
+  document.getElementById("cats").classList.remove("reviewing");
+  step = n;
+  const onResults = step >= RESULTS_STEP;
+
+  document.querySelectorAll(".cat").forEach((c, i) => c.classList.toggle("active", !onResults && i === step));
+  document.getElementById("results").classList.toggle("active", onResults);
+  document.getElementById("nav").style.display = onResults ? "none" : "flex";
+  document.getElementById("scalekey").style.display = onResults ? "none" : "flex";
+  document.getElementById("progress").style.display = onResults ? "none" : "block";
+  document.getElementById("lead").style.display = onResults ? "none" : "block";
+
+  if (onResults) { renderResults(); drawWheel(); }
+  refresh();
+  updateFoot();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* Review: all categories at once, with one way back to the results */
+function showReview() {
+  reviewMode = true;
+  document.querySelectorAll(".cat").forEach(c => c.classList.add("active"));
+  document.getElementById("cats").classList.add("reviewing");
+  document.getElementById("results").classList.remove("active");
+  document.getElementById("nav").style.display = "none";
+  document.getElementById("progress").style.display = "none";
+  document.getElementById("lead").style.display = "none";
+  document.getElementById("scalekey").style.display = "flex";
+  const rb2 = document.getElementById("reviewbar");
+  rb2.hidden = false; rb2.style.display = "flex";
+  refresh();
+  updateFoot();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  if (step < RESULTS_STEP && !isComplete(step)) return; // gate
+  showStep(step + 1);
+});
+document.getElementById("backBtn").addEventListener("click", () => {
+  if (step > 0) showStep(step - 1);
+});
+document.getElementById("reviewBtn").addEventListener("click", () => showReview());
+document.getElementById("backToResults").addEventListener("click", () => showStep(RESULTS_STEP));
+document.getElementById("printBtn").addEventListener("click", () => window.print());
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (!confirm("Clear all scores and reflection notes and start over?")) return;
+  scores.forEach(row => row.fill(null));
+  document.querySelectorAll(".seg").forEach(seg => renderSegState(seg, null));
+  document.querySelectorAll(".stmt").forEach(s => { s.classList.add("unrated"); updateStmtPrint(s, null); });
+  document.querySelectorAll(".reflect textarea").forEach(t => t.value = "");
+  showStep(0);
+});
+
+/* ---------- Results ---------- */
+function renderResults() {
+  // summary list
+  const sl = document.getElementById("summaryList");
+  sl.innerHTML = "";
+  CATEGORIES.forEach((cat, ci) => {
+    const avg = catAverage(ci);
+    const fl = isFlagged(ci);
+    const row = document.createElement("div");
+    row.className = "srow" + (fl ? " flag" : "");
+    row.innerHTML =
+      '<span class="nm">' + cat.label + (fl ? ' <span class="fl">Flag</span>' : "") + "</span>" +
+      '<span class="v">' + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</span>";
+    sl.appendChild(row);
+  });
+
+  // flagged detail
   const host = document.getElementById("flagged");
   host.innerHTML = "";
   const flags = [];
-  CATEGORIES.forEach((cat, ci) => {
-    const avg = catAverage(ci);
-    const complete = scores[ci].every(v => v !== null);
-    if (complete && avg <= 3) flags.push({ cat, avg });
-  });
+  CATEGORIES.forEach((cat, ci) => { if (isFlagged(ci)) flags.push({ cat, avg: catAverage(ci) }); });
 
   if (flags.length === 0) {
-    const anyComplete = CATEGORIES.some((c, ci) => scores[ci].every(v => v !== null));
     const div = document.createElement("div");
     div.className = "allgood";
-    div.innerHTML = anyComplete
-      ? "<b>No categories are flagged so far.</b><br>Every fully rated category is above the attention threshold. Finish any remaining categories to complete your readiness map."
-      : "<b>Rate the statements above to see your results.</b><br>Categories that average 3 or lower will appear here with guiding questions.";
+    div.innerHTML = "<b>No categories are flagged.</b><br>Every category scored above the attention threshold of 3. Use the reflection questions below to plan your next steps.";
     host.appendChild(div);
     return;
   }
+
+  const intro = document.createElement("p");
+  intro.style.cssText = "font-weight:700;margin:0 0 12px;";
+  intro.textContent = flags.length === 1
+    ? "1 category needs attention. Work through its guiding questions:"
+    : flags.length + " categories need attention. Work through their guiding questions:";
+  host.appendChild(intro);
 
   flags.forEach(({ cat, avg }) => {
     const fc = document.createElement("div");
@@ -579,20 +923,23 @@ function renderFlagged() {
     ul += "</ul>";
     fc.innerHTML =
       "<h3>" + cat.label + '<span class="sc">Average ' + avg.toFixed(1) + "</span></h3>" +
-      '<div style="font-size:13.5px;color:var(--muted);margin-bottom:2px;">Guiding questions to work through:</div>' +
-      ul;
+      '<div class="glabel">Guiding questions to work through:</div>' + ul;
+    const jump = document.createElement("button");
+    jump.type = "button";
+    jump.className = "res-jump";
+    jump.textContent = "See Extension resources for " + cat.label;
+    jump.addEventListener("click", () => showTab("res"));
+    fc.appendChild(jump);
     host.appendChild(fc);
   });
 }
 
-/* ---------- Wheel (canvas radar) ---------- */
+/* ---------- Wheel ---------- */
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 
-// small red pennant flag, horizontally centered at x, hanging above baseY
 function drawFlag(ctx, x, baseY) {
-  const h = 13, w = 9, poleX = x - 3;
-  const topY = baseY - h;
+  const h = 13, w = 9, poleX = x - 3, topY = baseY - h;
   ctx.strokeStyle = "#5a5a5a"; ctx.lineWidth = 1.4; ctx.lineCap = "round";
   ctx.beginPath(); ctx.moveTo(poleX, topY); ctx.lineTo(poleX, baseY); ctx.stroke();
   ctx.beginPath();
@@ -603,68 +950,48 @@ function drawFlag(ctx, x, baseY) {
   ctx.fillStyle = RED; ctx.fill();
 }
 
-// compact labels for the wheel (full names stay on cards + results)
 const WHEEL_LABELS = [
-  ["Business Goals"],
-  ["Cost-Benefit"],
-  ["Infra-", "structure"],
-  ["Connectivity"],
-  ["Labor/Training"],
-  ["Support"],
-  ["Adaptability"],
-  ["Stakeholder", "Mgmt"],
-  ["Production"]
+  ["Business Goals"], ["Cost-Benefit"], ["Infra-", "structure"], ["Connectivity"],
+  ["Labor &", "Training"], ["Support"], ["Adaptability"], ["Stakeholder", "Mgmt"], ["Production"]
 ];
 
 function drawWheel() {
   const holder = canvas.parentElement;
-  const size = Math.max(300, Math.round(holder.clientWidth));
+  const size = Math.max(300, Math.round(holder.clientWidth || 520));
   const dpr = window.devicePixelRatio || 1;
   canvas.width = Math.round(size * dpr);
   canvas.height = Math.round(size * dpr);
-  // NB: do not set canvas.style width/height in px. The holder is locked square
-  // (aspect-ratio 1) and CSS sizes the canvas to 100%, so it scales uniformly on
-  // screen and in print. Inline px here would overflow the smaller print box.
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, size, size);
 
-  const cx = size / 2;
-  const cy = size / 2;
-  const R = size / 2 - Math.max(74, size * 0.205); // generous, symmetric label margin
+  const cx = size / 2, cy = size / 2;
+  const R = size / 2 - Math.max(74, size * 0.205);
   const n = CATEGORIES.length;
-  const step = (Math.PI * 2) / n;
+  const step2 = (Math.PI * 2) / n;
   const start = -Math.PI / 2;
 
-  // base disk
   ctx.beginPath();
   for (let i = 0; i <= n; i++) {
-    const a = start + i * step;
+    const a = start + i * step2;
     const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }
   ctx.closePath();
-  ctx.fillStyle = "#fbfbfa";
-  ctx.fill();
+  ctx.fillStyle = "#fbfbfa"; ctx.fill();
 
-  // spokes (drawn first, under rings)
   for (let i = 0; i < n; i++) {
-    const a = start + i * step;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
+    const a = start + i * step2;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
     ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
-    ctx.strokeStyle = "#e6e4e0";
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    ctx.strokeStyle = "#e6e4e0"; ctx.lineWidth = 1; ctx.stroke();
   }
 
-  // rings 1..5
   for (let v = 1; v <= 5; v++) {
     const rr = (v / 5) * R;
     ctx.beginPath();
     for (let i = 0; i <= n; i++) {
-      const a = start + i * step;
-      const x = cx + rr * Math.cos(a);
-      const y = cy + rr * Math.sin(a);
+      const a = start + i * step2;
+      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
     ctx.closePath();
@@ -674,9 +1001,7 @@ function drawWheel() {
     ctx.stroke();
   }
 
-  // ring numbers, tucked just left of the vertical axis so they never touch the plot
-  ctx.textAlign = "right";
-  ctx.textBaseline = "middle";
+  ctx.textAlign = "right"; ctx.textBaseline = "middle";
   ctx.font = "11px 'Red Hat Text', sans-serif";
   for (let v = 1; v <= 5; v++) {
     const rr = (v / 5) * R;
@@ -684,148 +1009,90 @@ function drawWheel() {
     ctx.fillText(String(v), cx - 5, cy - rr);
   }
 
-  // data polygon (only points that have an average)
   const NEUTRAL = "#8a8a8a";
   const pts = [];
   for (let i = 0; i < n; i++) {
     const avg = catAverage(i);
     if (avg === null) { pts.push(null); continue; }
-    const complete = scores[i].every(v => v !== null);
-    const a = start + i * step;
-    const rr = (avg / 5) * R;
-    pts.push({ x: cx + rr * Math.cos(a), y: cy + rr * Math.sin(a), avg, flagged: complete && avg <= 3 });
+    const a = start + i * step2, rr = (avg / 5) * R;
+    pts.push({ x: cx + rr * Math.cos(a), y: cy + rr * Math.sin(a), avg, flagged: isFlagged(i) });
   }
-
   const known = pts.filter(p => p !== null);
   if (known.length >= 2) {
-    // fill only if we can trace a closed loop of consecutive known points around full circle
     const allKnown = pts.every(p => p !== null);
     ctx.beginPath();
-    let started = false;
     if (allKnown) {
-      pts.forEach((p, i) => {
-        if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-      });
+      pts.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
       ctx.closePath();
-      ctx.fillStyle = "rgba(120,120,120,0.10)";
-      ctx.fill();
+      ctx.fillStyle = "rgba(120,120,120,0.10)"; ctx.fill();
       ctx.strokeStyle = NEUTRAL; ctx.lineWidth = 2; ctx.stroke();
     } else {
-      // connect consecutive known points without closing across gaps
+      let started = false;
       for (let i = 0; i < n; i++) {
         const p = pts[i];
-        if (p) {
-          if (!started) { ctx.moveTo(p.x, p.y); started = true; }
-          else ctx.lineTo(p.x, p.y);
-        } else {
-          started = false;
-        }
+        if (p) { if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y); }
+        else started = false;
       }
       ctx.strokeStyle = NEUTRAL; ctx.lineWidth = 2; ctx.stroke();
     }
   }
-
-  // data points: flagged ones are red and larger with a bold halo
   known.forEach(p => {
     if (p.flagged) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(197,5,12,0.22)";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(197,5,12,0.5)";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(197,5,12,0.22)"; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(197,5,12,0.5)"; ctx.lineWidth = 1.5; ctx.stroke();
     }
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.flagged ? 6.5 : 4, 0, Math.PI * 2);
-    ctx.fillStyle = p.flagged ? RED : NEUTRAL;
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.flagged ? 6.5 : 4, 0, Math.PI * 2);
+    ctx.fillStyle = p.flagged ? RED : NEUTRAL; ctx.fill();
     ctx.strokeStyle = "#fff"; ctx.lineWidth = p.flagged ? 2 : 1.5; ctx.stroke();
   });
 
-  // axis labels: compact two-line names with the average below
   for (let i = 0; i < n; i++) {
-    const a = start + i * step;
-    const cos = Math.cos(a), sin = Math.sin(a);
-    const lx = cx + (R + 14) * cos;
-    const ly = cy + (R + 14) * sin;
-    const avg = catAverage(i);
-    const complete = scores[i].every(v => v !== null);
-    const flagged = complete && avg !== null && avg <= 3;
+    const a = start + i * step2, cos = Math.cos(a), sin = Math.sin(a);
+    const lx = cx + (R + 14) * cos, ly = cy + (R + 14) * sin;
+    const avg = catAverage(i), flagged = isFlagged(i);
 
     if (Math.abs(cos) < 0.30) ctx.textAlign = "center";
     else if (cos > 0) ctx.textAlign = "left";
     else ctx.textAlign = "right";
     ctx.textBaseline = "middle";
 
-    const lines = WHEEL_LABELS[i];
-    const lineH = 14;
-    const valH = avg !== null ? 16 : 15;
-    const blockH = lines.length * lineH + valH;
-    // vertical anchor: push text away from center a touch for top/bottom rows
+    const lines = WHEEL_LABELS[i], lineH = 14;
+    const blockH = lines.length * lineH + (avg !== null ? 16 : 15);
     let topY = ly - blockH / 2 + lineH / 2;
-    if (sin < -0.7) topY -= 4;      // top row sits a bit higher
-    if (sin > 0.7) topY += 4;       // bottom row sits a bit lower
+    if (sin < -0.7) topY -= 4;
+    if (sin > 0.7) topY += 4;
 
     ctx.font = "700 12.5px 'Red Hat Text', sans-serif";
     if (flagged) {
       let maxW = 0;
       lines.forEach(ln => { const w = ctx.measureText(ln).width; if (w > maxW) maxW = w; });
-      const centerX = ctx.textAlign === "left" ? lx + maxW / 2
-        : ctx.textAlign === "right" ? lx - maxW / 2 : lx;
+      const centerX = ctx.textAlign === "left" ? lx + maxW / 2 : ctx.textAlign === "right" ? lx - maxW / 2 : lx;
       drawFlag(ctx, centerX, topY - 9);
     }
-    ctx.font = "700 12.5px 'Red Hat Text', sans-serif";
     ctx.fillStyle = flagged ? RED : "#2a2a2a";
     lines.forEach((ln, k) => ctx.fillText(ln, lx, topY + k * lineH));
 
     ctx.font = "800 13px 'Red Hat Text', sans-serif";
-    if (avg === null) {
-      ctx.fillStyle = "#c4c4c4";
-      ctx.fillText("\u2013", lx, topY + lines.length * lineH + 2);
-    } else {
-      ctx.fillStyle = flagged ? RED : "#7a7a7a";
-      ctx.fillText(avg.toFixed(1), lx, topY + lines.length * lineH + 2);
-    }
+    if (avg === null) { ctx.fillStyle = "#c4c4c4"; ctx.fillText("\u2013", lx, topY + lines.length * lineH + 2); }
+    else { ctx.fillStyle = flagged ? RED : "#7a7a7a"; ctx.fillText(avg.toFixed(1), lx, topY + lines.length * lineH + 2); }
   }
 }
 
-/* ---------- Buttons ---------- */
-document.getElementById("printBtn").addEventListener("click", () => window.print());
-document.getElementById("resetBtn").addEventListener("click", () => {
-  if (!confirm("Clear all scores and reflection notes and start over?")) return;
-  scores.forEach(row => row.fill(null));
-  document.querySelectorAll(".seg").forEach(seg => renderSegState(seg, null));
-  document.querySelectorAll(".stmt .print-only").forEach(pr => pr.textContent = "");
-  document.querySelectorAll(".reflect textarea").forEach(t => t.value = "");
-  recompute();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-/* redraw whenever the wheel container actually changes size (fixes stale-size skew) */
 if (typeof ResizeObserver !== "undefined") {
-  const ro = new ResizeObserver(() => drawWheel());
-  ro.observe(canvas.parentElement);
+  new ResizeObserver(() => { if (step >= RESULTS_STEP) drawWheel(); }).observe(canvas.parentElement);
 } else {
   let rz;
   window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(drawWheel, 120); });
 }
-
-/* fonts may shift metrics; redraw once loaded */
 if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(drawWheel);
+  document.fonts.ready.then(() => { if (step >= RESULTS_STEP) drawWheel(); });
 }
-
-/* redraw around printing so the wheel buffer is current for the PDF */
-window.addEventListener("beforeprint", drawWheel);
-window.addEventListener("afterprint", drawWheel);
+window.addEventListener("beforeprint", () => { renderResults(); drawWheel(); });
 
 /* init */
-recompute();
-requestAnimationFrame(drawWheel);
-window.addEventListener("load", drawWheel);
+showStep(0);
 </script>
 </body>
 </html>
