@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ag Tech Ready</title>
+<title>Farm Tech Ready</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -41,8 +41,8 @@
     font-size: clamp(28px, 4.4vw, 42px); line-height: 1.05;
     margin: 0 0 8px; color: var(--red); letter-spacing: -0.01em;
   }
-  .hero .sub { font-style: italic; color: var(--muted); font-size: 18px; margin: 0 0 18px; }
-  .hero p.lead { margin: 0; color: #3a3a3a; }
+  .hero .sub { font-style: italic; color: var(--muted); font-size: 18px; margin: 0; max-width: 680px; line-height: 1.45; }
+  p.lead { margin: 22px 0 0; color: #3a3a3a; }
 
   .card {
     background: #fff; border: 1px solid var(--line);
@@ -67,6 +67,35 @@
   .tabcount.show { display: inline-block; }
   @media (max-width: 560px) {
     .tab { font-size: 16px; padding: 14px 16px; flex: 1; justify-content: center; }
+  }
+
+  /* Start screen */
+  .startbox { margin: 26px 0 10px; }
+  .startbox[hidden] { display: none !important; }
+  .startbox .sb-meta { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .btn-lg { font-size: 18px; padding: 16px 34px; }
+
+  /* Step header */
+  .stepHead[hidden] { display: none !important; }
+  .stepHead {
+    display: flex; align-items: center; gap: 14px;
+    margin: 24px 0 16px; padding-bottom: 14px;
+    border-bottom: 3px solid var(--red);
+  }
+  .stepHead .sh-num {
+    flex: 0 0 44px; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 20px;
+    display: inline-grid; place-items: center;
+  }
+  .stepHead .sh-kicker {
+    display: block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .stepHead .sh-title {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    font-size: clamp(22px, 3.4vw, 30px); line-height: 1.1;
+    margin: 2px 0 0; color: var(--ink);
   }
 
   /* Review mode */
@@ -121,7 +150,7 @@
   }
 
   /* Progress */
-  .progress { margin: 26px 0 18px; }
+  .progress { margin: 34px 0 18px; }
   .prog-top {
     display: flex; justify-content: space-between; align-items: baseline;
     margin-bottom: 8px; gap: 12px;
@@ -265,20 +294,11 @@
 
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 0; }
 
-  /* Summary table (print + results) */
-  .summary { margin-top: 26px; padding: 20px 22px; }
-  .summary h3 { font-family: "Red Hat Display", sans-serif; font-size: 18px; margin: 0 0 12px; }
-  .srow { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--grid); font-size: 15px; }
-  .srow:last-child { border-bottom: 0; }
-  .srow .nm { display: flex; align-items: center; gap: 8px; }
-  .srow .v { font-weight: 800; font-variant-numeric: tabular-nums; }
-  .srow.flag { color: var(--red); font-weight: 700; }
-  .srow.flag .v { color: var(--red); }
-  .srow .fl { font-size: 10px; font-weight: 800; color: #fff; background: var(--red); padding: 1px 7px; border-radius: 10px; text-transform: uppercase; }
 
   .foot { margin-top: 44px; padding: 20px 22px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
   .foot a { color: var(--red); font-weight: 600; }
-  .foot .credit { font-size: 12px; margin-top: 12px; line-height: 1.4; }
+  .foot .credit { font-size: 12.5px; line-height: 1.5; margin-top: 12px; }
+  .foot .credit:first-child { margin-top: 0; font-weight: 600; color: #3a3a3a; }
 
   .print-only { display: none; }
 
@@ -286,10 +306,11 @@
     @page { margin: 14mm; }
     body { font-size: 12px; }
     .wrap { max-width: none; padding: 0; }
-    .progress, .nav, .scalekey, .seg, .actions, .foot .credit, .hero p.lead, .tabs, .res-jump, .reviewbar { display: none !important; }
+    .progress, .nav, .scalekey, .seg, .actions, .hero p.lead, .tabs, .res-jump, .reviewbar { display: none !important; }
     #paneAssess, #paneRes { display: block !important; }
     #paneRes[hidden] { display: block !important; }
     .foot { display: block !important; }
+    .hero { display: block !important; }
     .resgroup { page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
     .reslink .d { font-size: 11px; }
     .reslink .t::after { content: " (" attr(href) ")"; font-weight: 500; font-size: 10px; color: #666; word-break: break-all; }
@@ -311,18 +332,24 @@
 
 <div class="wrap">
 
-  <section class="hero">
-    <h1>Ag Tech Ready</h1>
-    <p class="sub">A worksheet to assess your readiness to adopt new technology</p>
-    <p class="lead" id="lead">Adopting new technology can be a big investment. When done well, it can improve efficiency and profits. When done poorly, it can be costly. Work through the nine categories one at a time. Rate every statement, and your results appear at the end.</p>
+  <section class="hero" id="hero">
+    <h1>Farm Tech Ready</h1>
+    <p class="sub">Are you ready to adopt new technology? Find out where you stand, and what resources can help.</p>
   </section>
 
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" id="tabs">
     <button class="tab on" id="tabAssessBtn" type="button" role="tab">Assessment</button>
     <button class="tab" id="tabResBtn" type="button" role="tab">Extension Resources <span class="tabcount" id="tabCount"></span></button>
   </div>
 
   <div id="paneAssess">
+
+  <p class="lead" id="lead">Rate your readiness to adopt new technology on your farm across nine categories, then explore Extension resources for the areas that need work. Results are not saved or shared, but users can save or print them at the end of the assessment.</p>
+
+  <div class="startbox" id="startbox">
+    <div class="sb-meta">27 statements &middot; about 10 minutes</div>
+    <button class="btn primary btn-lg" id="startBtn" type="button">Take the assessment</button>
+  </div>
 
   <div class="progress" id="progress">
     <div class="prog-top">
@@ -340,6 +367,14 @@
     <span><b>3</b> Moderately</span>
     <span><b>4</b> Sufficiently</span>
     <span><b>5</b> Completely</span>
+  </div>
+
+  <div class="stepHead" id="stepHead" hidden>
+    <span class="sh-num" id="shNum">1</span>
+    <div class="sh-text">
+      <span class="sh-kicker" id="shKicker">Category 1 of 9</span>
+      <h2 class="sh-title" id="shTitle">Business Goals</h2>
+    </div>
   </div>
 
   <div class="reviewbar" id="reviewbar" hidden>
@@ -373,11 +408,6 @@
       </div>
     </div>
 
-    <div class="card summary">
-      <h3>Category averages</h3>
-      <div id="summaryList"></div>
-    </div>
-
     <div id="flagged" style="margin-top:26px;"></div>
 
     <div class="card reflect">
@@ -397,28 +427,27 @@
       <button class="btn primary" id="printBtn" type="button">Save or print my results</button>
       <button class="btn ghost" id="reviewBtn" type="button">Review my answers</button>
       <button class="btn ghost" id="resetBtn" type="button">Start over</button>
+      <button class="btn ghost" id="resBtn" type="button">Extension resources</button>
     </div>
   </section>
 
   </div><!-- /paneAssess -->
 
   <div id="paneRes" hidden>
-    <p class="reslead">Research-based resources from UW&ndash;Madison Extension to help you address each category. Once you finish the assessment, your flagged categories move to the top of this list.</p>
+    <p class="reslead">Research-based resources from UW&ndash;Madison Extension to help you address each category. Once you finish the assessment, your flagged categories move to the top of this list. You may want to start by reading the companion article to this worksheet: <a href="https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/" target="_blank" rel="noopener">Adopting New Technology: Start with the Right Questions</a>. It is a good place to begin.</p>
     <div id="resList"></div>
     <div class="card askbox">
       <h3>Still have questions?</h3>
-      <p>Extension educators across Wisconsin can talk through your specific situation at no cost.</p>
       <p class="asklinks">
-        <a href="https://extension.wisc.edu/agriculture/ask-an-agriculture-question/">Ask an agriculture question</a>
-        <a href="https://counties.extension.wisc.edu/">Find your county Extension office</a>
-        <a href="mailto:farms@extension.wisc.edu">farms@extension.wisc.edu</a>
+        <a href="https://extension.wisc.edu/agriculture/ask-an-agriculture-question/" target="_blank" rel="noopener">Ask an agriculture question</a>
+        <a href="https://counties.extension.wisc.edu/" target="_blank" rel="noopener">Find your county Extension office</a>
       </p>
     </div>
   </div><!-- /paneRes -->
 
   <div class="foot" id="foot">
-    <strong>How to use your results.</strong> If any category averages 3 or below, use its guiding questions to identify what information or planning you still need. For a complete list of questions and additional resources, visit <a href="https://farms.extension.wisc.edu/technology">farms.extension.wisc.edu/technology</a>.
-    <div class="credit">Developed by Kevin Bernhardt, Farm Management Specialist, and the Automation Working Group (Stephanie Plaster, Carolina Pinz&oacute;n, Katelyn Goldsmith, John Shutske, Angie Ulness, Jackie McCarville, Leonard Polzin, Kelly Wilfert, Nesli Akdeniz) with the UW&ndash;Madison Division of Extension.</div>
+    <div class="credit">Developed by the Investment in Tech and Automation Workgroup (Kevin Bernhardt, Stephanie Plaster, Carolina Pinz&oacute;n, Katelyn Goldsmith, John Shutske, Angie Ulness, Jackie McCarville, Leonard Polzin, Kelly Wilfert, Nesli Akdeniz) with the UW&ndash;Madison Division of Extension.</div>
+    <div class="credit">This application was developed with the assistance of an AI tool, which was used to write the underlying code (HTML, CSS, and JavaScript). The content is not AI-generated: the nine readiness categories, the 27 statements, the 1-to-5 rating scale, the threshold of 3, and the guiding questions all come from the Ag Technology Readiness worksheet, and the linked resources are published Extension materials. The authors reviewed and tested the tool for accuracy.</div>
   </div>
 
 </div>
@@ -567,46 +596,67 @@ const SCALE = ["Not at all", "Minimally", "Moderately", "Sufficiently", "Complet
 
 /* ---------- UW-Madison Extension resources (verified links) ---------- */
 const AUTOMATION_HUB = { t: "Agriculture Automation: Embracing Technology in Farming", u: "https://farms.extension.wisc.edu/technology/", d: "Extension's hub of real-farm examples, articles, and tools on ag automation." };
-const RIGHT_QUESTIONS = { t: "Adopting New Technology: Start with the Right Questions", u: "https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/", d: "The companion article to this worksheet. The best place to begin." };
-const HARNESSING = { t: "Harnessing the Power of Ag Tech: What Farms Need to Know", u: "https://farms.extension.wisc.edu/articles/harnessing-the-power-of-ag-tech-what-farms-need-to-know/", d: "First in a series on key considerations for technology and automation investment." };
+const RIGHT_QUESTIONS = { t: "Adopting New Technology: Start with the Right Questions", u: "https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/", d: "The companion article to this worksheet." };
 const STRATEGY = { t: "Setting Your Technology Investment Strategy", u: "https://farms.extension.wisc.edu/articles/setting-your-technology-investment-strategy/", d: "Weighing the opportunities against the risks and large costs." };
 const FUTURE = { t: "Embracing Technology in Farming: What to Think About for the Future", u: "https://farms.extension.wisc.edu/articles/embracing-technology-in-farming-what-to-think-about-for-the-future/", d: "Looking ahead at robots, automated equipment, and self-driving machines." };
 const BALANCING = { t: "Balancing Technology and People: The Evolving Role of Farm Workers", u: "https://farms.extension.wisc.edu/articles/balancing-technology-and-people-the-evolving-role-of-farm-workers-in-automation/", d: "What changes for you, family members, and hired employees." };
 const WIEGEL = { t: "Farm story: Wiegel Riverside Dairy", u: "https://farms.extension.wisc.edu/files/2025/01/WIEGEL-Farm-Story-web.pdf", d: "Why they installed robots, results, lessons learned, and advice.", pdf: true };
 const JENLAR = { t: "Farm story: Jenlar Holsteins and Brown Swiss", u: "https://farms.extension.wisc.edu/files/2025/01/JENLAR-Farm-Story-web.pdf", d: "A second producer's experience with robotic milking.", pdf: true };
-const ASK = { t: "Ask an agriculture question", u: "https://extension.wisc.edu/agriculture/ask-an-agriculture-question/", d: "Put your question to an Extension specialist." };
-const COUNTY = { t: "Find your county Extension office", u: "https://counties.extension.wisc.edu/", d: "Local educators who can talk through your situation." };
+const AMS_GLOSSARY = { t: "Automatic Milking Systems Glossary", u: "https://dairy.extension.wisc.edu/automatic-milking-systems-ams-glossary/", d: "Understand key AMS terms and concepts." };
 const DAIRY_EMERGING = { t: "Emerging Technologies and Facilities for Dairy Operations", u: "https://dairy.extension.wisc.edu/article-topic/emerging-technologies-and-facilities/", d: "Resources for upgrading barns, parlors, and equipment." };
-const DAIRY_HOME = { t: "Dairy Extension", u: "https://dairy.extension.wisc.edu/", d: "Full dairy program: management, facilities, and herd resources." };
+const ASK = { t: "Ask an agriculture question", u: "https://extension.wisc.edu/agriculture/ask-an-agriculture-question/", d: "Put your question to an Extension specialist." };
 
 const RESOURCES = {
-  goals: [ RIGHT_QUESTIONS, FUTURE, STRATEGY,
-    { t: "Business Development, Transition and Succession", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Tie the decision to your long-term business and family strategy." } ],
+  goals: [
+    { t: "Setting Business Strategy Using a SWOT Analysis", u: "https://farms.extension.wisc.edu/articles/setting-business-strategy-using-a-swot-analysis/", d: "Strategic assessment of strengths, weaknesses, opportunities, and threats." },
+    STRATEGY,
+    { t: "Navigating Your Ag Business: From Stress to Success", u: "https://farms.extension.wisc.edu/programs/navigating-your-ag-business/", d: "An online strategic planning course." },
+    { t: "Business Development, Transition and Succession Resources", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Tie the decision to your long-term business and family strategy." }
+  ],
   cost: [
     { t: "Before You Buy: A Farm Tech Investment Planning Guide", u: "https://farms.extension.wisc.edu/articles/before-you-buy-a-farm-tech-investment-planning-guide/", d: "Build the plan before the purchase: costs, payback, and pitfalls." },
     { t: "Making the Switch to Robots: AMS Transition Budgeter", u: "https://dairy.extension.wisc.edu/articles/making-the-switch-to-robots-a-new-budgeting-tool-for-transitioning-to-automatic-milking-systems/", d: "A web-based tool to model the long-term finances of going robotic." },
     STRATEGY,
-    { t: "Financial Management", u: "https://farms.extension.wisc.edu/article-topic/financial-strategic-management/", d: "Budgeting, ROI, and financial decision-making resources." },
-    { t: "Farm Pulse: Financial Management", u: "https://farms.extension.wisc.edu/programs/farm-pulse/", d: "Extension program to sharpen farm financial skills." } ],
-  infra: [ DAIRY_EMERGING, DAIRY_HOME, HARNESSING,
-    { t: "Crops and Soils Extension", u: "https://cropsandsoils.extension.wisc.edu/", d: "Field-side infrastructure, equipment, and agronomy resources." },
-    { t: "Livestock Extension", u: "https://livestock.extension.wisc.edu/", d: "Facilities and systems resources for livestock operations." } ],
+    { t: "Financial Analysis: Cost of Production and Sensitivity Analysis", u: "https://farms.extension.wisc.edu/programs/farm-pulse/", d: "Analyze profitability impacts of technology adoption." },
+    { t: "Financial Management", u: "https://farms.extension.wisc.edu/article-topic/financial-strategic-management/", d: "Budgeting, ROI, and financial decision-making resources." }
+  ],
+  infra: [
+    DAIRY_EMERGING,
+    { t: "Automated Milking Systems Facility Design Considerations", u: "https://dairy.extension.wisc.edu/articles/automated-milking-systems-facility-design-considerations/", d: "Assess facility modifications required." },
+    { t: "The Dairyland Initiative Facility Designs", u: "https://thedairylandinitiative.vetmed.wisc.edu/", d: "Facility designs for many facets of a dairy operation including AMS and automated feed centers." },
+    { t: "12 Things You Can Do When Moving Toward Higher Levels of Ag Tech", u: "https://ipcm.wisc.edu/blog/2023/02/12-things-you-can-do-when-moving-toward-higher-levels-of-ag-tech/", d: "Explore steps you can do today." }
+  ],
   connect: [
-    { t: "Broadband: access, adoption, and digital inclusion", u: "https://economicdevelopment.extension.wisc.edu/topics/broadband/", d: "Extension's broadband program, including rural access and farm profits." },
-    { t: "Broadband Toolkit", u: "https://economicdevelopment.extension.wisc.edu/broadband-toolkit/", d: "Modules on broadband basics, terminology, and Wisconsin context." },
-    HARNESSING,
-    { t: "Large Language Models: A Powerful New Tool for Wisconsin Agriculture", u: "https://farms.extension.wisc.edu/articles/large-language-models-a-powerful-new-tool-for-wisconsin-agriculture/", d: "How connected AI tools are reshaping agricultural work." } ],
-  labor: [ BALANCING,
+    { t: "Broadband: access, adoption, and infrastructure", u: "https://economicdevelopment.extension.wisc.edu/topics/broadband/", d: "Extension's broadband program, including rural access and connectivity resources." },
+    { t: "Large Language Models: A Powerful New Tool for Wisconsin Agriculture", u: "https://farms.extension.wisc.edu/articles/large-language-models-a-powerful-new-tool-for-wisconsin-agriculture/", d: "How connected AI tools are reshaping agricultural work." },
+    { t: "Using AMS Data to Improve Herd Health", u: "https://dairy.extension.wisc.edu/article-topic/automatic-milking-systems-ams/", d: "A farm shares insights into how they use their AMS data." },
+    { t: "Data Ownership and Privacy in Dairy Farming", u: "https://dairy.extension.wisc.edu/article-topic/automatic-milking-systems-ams/", d: "A journal article exploring data ownership and privacy." },
+    { t: "AI in Agriculture", u: "https://cropsandsoils.extension.wisc.edu/articles/ai-in-agriculture/", d: "How AI tools are used for crop production, decision support, and problem-solving." }
+  ],
+  labor: [
+    BALANCING,
     { t: "Becoming the Employer of Choice", u: "https://farms.extension.wisc.edu/programs/becoming-the-employer-of-choice/", d: "Extension program on hiring, managing, and keeping good people." },
     { t: "Human Resources", u: "https://farms.extension.wisc.edu/article-topic/human-resources/", d: "Payroll, training, and workforce planning resources." },
-    { t: "Safety and Health", u: "https://farms.extension.wisc.edu/topics/safety-health/", d: "Safety training and hazard resources for new equipment." } ],
-  support: [ WIEGEL, JENLAR, ASK, COUNTY, AUTOMATION_HUB ],
+    { t: "Safety and Health", u: "https://farms.extension.wisc.edu/topics/safety-health/", d: "Safety training and hazard resources for new equipment." },
+    AMS_GLOSSARY
+  ],
+  support: [
+    { t: "Udderly Essential AMS Maintenance Tips", u: "https://dairy.extension.wisc.edu/articles/udderly-essential-ams-maintenance-tips/", d: "Maintenance tasks to support the smooth operation of AMS." },
+    WIEGEL, JENLAR, AUTOMATION_HUB, AMS_GLOSSARY
+  ],
   adapt: [ FUTURE, BALANCING, WIEGEL, AUTOMATION_HUB ],
   stake: [
     { t: "Ag Land Pricing and Contracts", u: "https://farms.extension.wisc.edu/article-topic/pricing-and-contracts/", d: "Contract terms and the fine print, including your data rights." },
+    { t: "Farm Succession Resources", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Family, ownership, and stakeholder communication." },
     { t: "Policy, Markets and Marketing", u: "https://farms.extension.wisc.edu/topics/policy-markets-marketing/", d: "Regulatory and market context for your decision." },
-    HARNESSING, ASK ],
-  prod: [ DAIRY_EMERGING, DAIRY_HOME, HARNESSING, AUTOMATION_HUB ]
+    AMS_GLOSSARY
+  ],
+  prod: [
+    DAIRY_EMERGING,
+    { t: "Dairy Farm Management Decision Support Tools", u: "https://dairymgt.info/", d: "Scientifically-based tools to help you evaluate options." },
+    { t: "Crops and Soils Extension", u: "https://cropsandsoils.extension.wisc.edu/", d: "Field-side infrastructure, equipment, and agronomy resources." },
+    { t: "Livestock Extension", u: "https://livestock.extension.wisc.edu/", d: "Facilities and systems resources for livestock operations." }
+  ]
 };
 
 const RES_WHY = {
@@ -625,7 +675,8 @@ const TOTAL_STATEMENTS = CATEGORIES.length * 3; // 27
 const RESULTS_STEP = CATEGORIES.length;         // 9
 
 const scores = CATEGORIES.map(() => [null, null, null]);
-let step = 0;
+const NOT_STARTED = -1;
+let step = NOT_STARTED;
 let reviewMode = false;
 
 /* ---------- Build cards ---------- */
@@ -804,7 +855,9 @@ function refresh() {
   document.getElementById("pbarFill").style.width = pct + "%";
   document.getElementById("pctLabel").textContent = pct + "% complete";
   document.getElementById("stepLabel").textContent =
-    step >= RESULTS_STEP ? "Results" : "Step " + (step + 1) + " of " + CATEGORIES.length + ": " + CATEGORIES[step].label;
+    (step === NOT_STARTED || step >= RESULTS_STEP)
+      ? "Progress"
+      : "Step " + (step + 1) + " of " + CATEGORIES.length;
 
   Array.from(dotsEl.children).forEach((d, i) => {
     d.className = isComplete(i) ? "done" : (i === step ? "now" : "");
@@ -813,7 +866,7 @@ function refresh() {
   // nav state
   const nextBtn = document.getElementById("nextBtn");
   const backBtn = document.getElementById("backBtn");
-  if (step < RESULTS_STEP) {
+  if (step > NOT_STARTED && step < RESULTS_STEP) {
     const done = isComplete(step);
     nextBtn.disabled = !done;
     nextBtn.textContent = (step === RESULTS_STEP - 1) ? "See my results" : "Next";
@@ -827,14 +880,28 @@ function showStep(n) {
   rb.hidden = true; rb.style.display = "none";
   document.getElementById("cats").classList.remove("reviewing");
   step = n;
+  const notStarted = step === NOT_STARTED;
   const onResults = step >= RESULTS_STEP;
+  const onQuestions = !notStarted && !onResults;
 
-  document.querySelectorAll(".cat").forEach((c, i) => c.classList.toggle("active", !onResults && i === step));
+  document.querySelectorAll(".cat").forEach((c, i) => c.classList.toggle("active", onQuestions && i === step));
   document.getElementById("results").classList.toggle("active", onResults);
-  document.getElementById("nav").style.display = onResults ? "none" : "flex";
-  document.getElementById("scalekey").style.display = onResults ? "none" : "flex";
-  document.getElementById("progress").style.display = onResults ? "none" : "block";
-  document.getElementById("lead").style.display = onResults ? "none" : "block";
+  document.getElementById("nav").style.display = onQuestions ? "flex" : "none";
+  document.getElementById("scalekey").style.display = onQuestions ? "flex" : "none";
+  document.getElementById("progress").style.display = onQuestions ? "block" : "none";
+  document.getElementById("lead").style.display = notStarted ? "block" : "none";
+  document.getElementById("startbox").hidden = !notStarted;
+
+  document.getElementById("hero").style.display = onQuestions ? "none" : "block";
+  document.getElementById("tabs").style.display = onQuestions ? "none" : "flex";
+
+  const sh = document.getElementById("stepHead");
+  sh.hidden = !onQuestions;
+  if (onQuestions) {
+    document.getElementById("shNum").textContent = step + 1;
+    document.getElementById("shKicker").textContent = "Category " + (step + 1) + " of " + CATEGORIES.length;
+    document.getElementById("shTitle").textContent = CATEGORIES[step].label;
+  }
 
   if (onResults) { renderResults(); drawWheel(); }
   refresh();
@@ -854,6 +921,10 @@ function showReview() {
   document.getElementById("scalekey").style.display = "flex";
   const rb2 = document.getElementById("reviewbar");
   rb2.hidden = false; rb2.style.display = "flex";
+  document.getElementById("stepHead").hidden = true;
+  document.getElementById("startbox").hidden = true;
+  document.getElementById("hero").style.display = "block";
+  document.getElementById("tabs").style.display = "flex";
   refresh();
   updateFoot();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -866,7 +937,9 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 document.getElementById("backBtn").addEventListener("click", () => {
   if (step > 0) showStep(step - 1);
 });
+document.getElementById("startBtn").addEventListener("click", () => showStep(0));
 document.getElementById("reviewBtn").addEventListener("click", () => showReview());
+document.getElementById("resBtn").addEventListener("click", () => showTab("res"));
 document.getElementById("backToResults").addEventListener("click", () => showStep(RESULTS_STEP));
 document.getElementById("printBtn").addEventListener("click", () => window.print());
 document.getElementById("resetBtn").addEventListener("click", () => {
@@ -875,25 +948,11 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   document.querySelectorAll(".seg").forEach(seg => renderSegState(seg, null));
   document.querySelectorAll(".stmt").forEach(s => { s.classList.add("unrated"); updateStmtPrint(s, null); });
   document.querySelectorAll(".reflect textarea").forEach(t => t.value = "");
-  showStep(0);
+  showStep(NOT_STARTED);
 });
 
 /* ---------- Results ---------- */
 function renderResults() {
-  // summary list
-  const sl = document.getElementById("summaryList");
-  sl.innerHTML = "";
-  CATEGORIES.forEach((cat, ci) => {
-    const avg = catAverage(ci);
-    const fl = isFlagged(ci);
-    const row = document.createElement("div");
-    row.className = "srow" + (fl ? " flag" : "");
-    row.innerHTML =
-      '<span class="nm">' + cat.label + (fl ? ' <span class="fl">Flag</span>' : "") + "</span>" +
-      '<span class="v">' + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</span>";
-    sl.appendChild(row);
-  });
-
   // flagged detail
   const host = document.getElementById("flagged");
   host.innerHTML = "";
@@ -1092,7 +1151,7 @@ if (document.fonts && document.fonts.ready) {
 window.addEventListener("beforeprint", () => { renderResults(); drawWheel(); });
 
 /* init */
-showStep(0);
+showStep(NOT_STARTED);
 </script>
 </body>
 </html>
