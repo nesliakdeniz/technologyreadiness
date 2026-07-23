@@ -125,7 +125,7 @@
   }
   .resgroup.flagged h3 { color: var(--red); }
   .resgroup .fl {
-    font-size: 10.5px; font-weight: 800; color: #fff; background: var(--red);
+    font-size: 12px; font-weight: 800; color: #fff; background: var(--red);
     padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em;
   }
   .resgroup .sc { font-size: 12.5px; font-weight: 700; color: var(--muted); }
@@ -135,7 +135,7 @@
   .reslink .t { color: var(--red); font-weight: 700; font-size: 15px; text-decoration: none; }
   .reslink:hover .t { text-decoration: underline; }
   .reslink .d { color: var(--muted); font-size: 13.5px; display: block; margin-top: 1px; }
-  .reslink .pdf { font-size: 10px; font-weight: 800; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; }
+  .reslink .pdf { font-size: 12px; font-weight: 800; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; }
 
   .askbox { padding: 20px 22px; margin-top: 24px; background: var(--panel); }
   .askbox h3 { font-family: "Red Hat Display", sans-serif; font-size: 17px; margin: 0 0 4px; }
@@ -209,7 +209,7 @@
   .stmt { padding: 16px 0 18px; border-top: 1px solid var(--grid); }
   .stmt .q { font-size: 16.5px; line-height: 1.5; color: var(--ink); margin-bottom: 10px; }
   .stmt.unrated .q::after {
-    content: "required"; font-size: 11px; font-weight: 800; text-transform: uppercase;
+    content: "required"; font-size: 12px; font-weight: 800; text-transform: uppercase;
     color: var(--red); background: var(--flag-bg); border: 1px solid #f3cfd0;
     padding: 1px 7px; border-radius: 10px; margin-left: 8px; letter-spacing: 0.03em;
     white-space: nowrap;
@@ -220,7 +220,7 @@
     border-radius: 10px; font-family: inherit; font-size: 17px; font-weight: 700;
     color: #6a6a6a; cursor: pointer; transition: all .12s ease; line-height: 1.1;
   }
-  .seg button small { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.02em; margin-top: 3px; color: #9a9a9a; }
+  .seg button small { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; margin-top: 3px; color: #9a9a9a; }
   .seg button:hover { border-color: var(--red); color: var(--red); }
   .seg button:hover small { color: var(--red); }
   .seg button.on { background: var(--red); border-color: var(--red); color: #fff; }
@@ -596,14 +596,12 @@ const SCALE = ["Not at all", "Minimally", "Moderately", "Sufficiently", "Complet
 
 /* ---------- UW-Madison Extension resources (verified links) ---------- */
 const AUTOMATION_HUB = { t: "Agriculture Automation: Embracing Technology in Farming", u: "https://farms.extension.wisc.edu/technology/", d: "Extension's hub of real-farm examples, articles, and tools on ag automation." };
-const RIGHT_QUESTIONS = { t: "Adopting New Technology: Start with the Right Questions", u: "https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/", d: "The companion article to this worksheet." };
 const STRATEGY = { t: "Setting Your Technology Investment Strategy", u: "https://farms.extension.wisc.edu/articles/setting-your-technology-investment-strategy/", d: "Weighing the opportunities against the risks and large costs." };
 const BALANCING = { t: "Balancing Technology and People: The Evolving Role of Farm Workers", u: "https://farms.extension.wisc.edu/articles/balancing-technology-and-people-the-evolving-role-of-farm-workers-in-automation/", d: "What changes for you, family members, and hired employees." };
 const WIEGEL = { t: "Farm story: Wiegel Riverside Dairy", u: "https://farms.extension.wisc.edu/files/2025/01/WIEGEL-Farm-Story-web.pdf", d: "Why they installed robots, results, lessons learned, and advice.", pdf: true };
 const JENLAR = { t: "Farm story: Jenlar Holsteins and Brown Swiss", u: "https://farms.extension.wisc.edu/files/2025/01/JENLAR-Farm-Story-web.pdf", d: "A second producer's experience with robotic milking.", pdf: true };
 const AMS_GLOSSARY = { t: "Automatic Milking Systems Glossary", u: "https://dairy.extension.wisc.edu/automatic-milking-systems-ams-glossary/", d: "Understand key AMS terms and concepts." };
 const DAIRY_EMERGING = { t: "Emerging Technologies and Facilities for Dairy Operations", u: "https://dairy.extension.wisc.edu/article-topic/emerging-technologies-and-facilities/", d: "Resources for upgrading barns, parlors, and equipment." };
-const ASK = { t: "Ask an agriculture question", u: "https://extension.wisc.edu/agriculture/ask-an-agriculture-question/", d: "Put your question to an Extension specialist." };
 
 const RESOURCES = {
   goals: [
