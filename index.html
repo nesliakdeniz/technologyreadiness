@@ -338,11 +338,11 @@
   </section>
 
   <div class="tabs" role="tablist" id="tabs">
-    <button class="tab on" id="tabAssessBtn" type="button" role="tab">Assessment</button>
-    <button class="tab" id="tabResBtn" type="button" role="tab">Extension Resources <span class="tabcount" id="tabCount"></span></button>
+    <button class="tab on" id="tabAssessBtn" type="button" role="tab" aria-selected="true" aria-controls="paneAssess">Assessment</button>
+    <button class="tab" id="tabResBtn" type="button" role="tab" aria-selected="false" aria-controls="paneRes">Extension Resources <span class="tabcount" id="tabCount"></span></button>
   </div>
 
-  <div id="paneAssess">
+  <div id="paneAssess" role="tabpanel" aria-labelledby="tabAssessBtn">
 
   <p class="lead" id="lead">Rate your readiness to adopt new technology on your farm across nine categories, then explore Extension resources for the areas that need work. Results are not saved or shared, but users can save or print them at the end of the assessment.</p>
 
@@ -400,7 +400,7 @@
     <div class="card wheel-card">
       <h3>Technology Readiness Wheel</h3>
       <p class="hint">The bold ring marks the score of 3 threshold. Points inside it are flagged.</p>
-      <div class="canvas-holder"><canvas id="wheel" width="600" height="600"></canvas></div>
+      <div class="canvas-holder"><canvas id="wheel" width="600" height="600" role="img" aria-label="Technology Readiness Wheel"></canvas></div>
       <div class="legend">
         <span><span class="dot plotted"></span>Your average</span>
         <span><svg class="legflag" viewBox="0 0 12 14" width="11" height="13" aria-hidden="true"><line x1="1.5" y1="1" x2="1.5" y2="13" stroke="#5a5a5a" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 1 L10 3 Q6 4 1.5 5 Z" fill="#C5050C"/></svg>Flagged (3 or lower)</span>
@@ -413,14 +413,14 @@
     <div class="card reflect">
       <h3>Reflection questions to help you move forward</h3>
       <p class="rl">These apply across all of your flagged categories.</p>
-      <label>What is stopping you from having all the information you need?</label>
-      <textarea data-rk="stop"></textarea>
-      <label>What resources or people could help you get more information?</label>
-      <textarea data-rk="help"></textarea>
-      <label>What are the one or two most important things you should explore first?</label>
-      <textarea data-rk="first"></textarea>
-      <label>When will you get the information, and who is responsible?</label>
-      <textarea data-rk="who"></textarea>
+      <label for="rq-stop">What is stopping you from having all the information you need?</label>
+      <textarea id="rq-stop" name="rq-stop" data-rk="stop"></textarea>
+      <label for="rq-help">What resources or people could help you get more information?</label>
+      <textarea id="rq-help" name="rq-help" data-rk="help"></textarea>
+      <label for="rq-first">What are the one or two most important things you should explore first?</label>
+      <textarea id="rq-first" name="rq-first" data-rk="first"></textarea>
+      <label for="rq-who">When will you get the information, and who is responsible?</label>
+      <textarea id="rq-who" name="rq-who" data-rk="who"></textarea>
     </div>
 
     <div class="actions">
@@ -433,7 +433,7 @@
 
   </div><!-- /paneAssess -->
 
-  <div id="paneRes" hidden>
+  <div id="paneRes" role="tabpanel" aria-labelledby="tabResBtn" hidden>
     <p class="reslead">Research-based resources from UW&ndash;Madison Extension to help you address each category. Once you finish the assessment, your flagged categories move to the top of this list. You may want to start by reading the companion article to this worksheet: <a href="https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/" target="_blank" rel="noopener">Adopting New Technology: Start with the Right Questions</a>. It is a good place to begin.</p>
     <div id="resList"></div>
     <div class="card askbox">
@@ -598,7 +598,6 @@ const SCALE = ["Not at all", "Minimally", "Moderately", "Sufficiently", "Complet
 const AUTOMATION_HUB = { t: "Agriculture Automation: Embracing Technology in Farming", u: "https://farms.extension.wisc.edu/technology/", d: "Extension's hub of real-farm examples, articles, and tools on ag automation." };
 const RIGHT_QUESTIONS = { t: "Adopting New Technology: Start with the Right Questions", u: "https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/", d: "The companion article to this worksheet." };
 const STRATEGY = { t: "Setting Your Technology Investment Strategy", u: "https://farms.extension.wisc.edu/articles/setting-your-technology-investment-strategy/", d: "Weighing the opportunities against the risks and large costs." };
-const FUTURE = { t: "Embracing Technology in Farming: What to Think About for the Future", u: "https://farms.extension.wisc.edu/articles/embracing-technology-in-farming-what-to-think-about-for-the-future/", d: "Looking ahead at robots, automated equipment, and self-driving machines." };
 const BALANCING = { t: "Balancing Technology and People: The Evolving Role of Farm Workers", u: "https://farms.extension.wisc.edu/articles/balancing-technology-and-people-the-evolving-role-of-farm-workers-in-automation/", d: "What changes for you, family members, and hired employees." };
 const WIEGEL = { t: "Farm story: Wiegel Riverside Dairy", u: "https://farms.extension.wisc.edu/files/2025/01/WIEGEL-Farm-Story-web.pdf", d: "Why they installed robots, results, lessons learned, and advice.", pdf: true };
 const JENLAR = { t: "Farm story: Jenlar Holsteins and Brown Swiss", u: "https://farms.extension.wisc.edu/files/2025/01/JENLAR-Farm-Story-web.pdf", d: "A second producer's experience with robotic milking.", pdf: true };
@@ -617,7 +616,7 @@ const RESOURCES = {
     { t: "Before You Buy: A Farm Tech Investment Planning Guide", u: "https://farms.extension.wisc.edu/articles/before-you-buy-a-farm-tech-investment-planning-guide/", d: "Build the plan before the purchase: costs, payback, and pitfalls." },
     { t: "Making the Switch to Robots: AMS Transition Budgeter", u: "https://dairy.extension.wisc.edu/articles/making-the-switch-to-robots-a-new-budgeting-tool-for-transitioning-to-automatic-milking-systems/", d: "A web-based tool to model the long-term finances of going robotic." },
     STRATEGY,
-    { t: "Financial Analysis: Cost of Production and Sensitivity Analysis", u: "https://farms.extension.wisc.edu/programs/farm-pulse/", d: "Analyze profitability impacts of technology adoption." },
+    { t: "Financial Analysis: Cost of Production and Sensitivity Analysis", u: "https://youtu.be/4CY-Demoo1E?si=szYOwSjTAWczZUN9", d: "Analyze profitability impacts of technology adoption.", video: true },
     { t: "Financial Management", u: "https://farms.extension.wisc.edu/article-topic/financial-strategic-management/", d: "Budgeting, ROI, and financial decision-making resources." }
   ],
   infra: [
@@ -629,8 +628,8 @@ const RESOURCES = {
   connect: [
     { t: "Broadband: access, adoption, and infrastructure", u: "https://economicdevelopment.extension.wisc.edu/topics/broadband/", d: "Extension's broadband program, including rural access and connectivity resources." },
     { t: "Large Language Models: A Powerful New Tool for Wisconsin Agriculture", u: "https://farms.extension.wisc.edu/articles/large-language-models-a-powerful-new-tool-for-wisconsin-agriculture/", d: "How connected AI tools are reshaping agricultural work." },
-    { t: "Using AMS Data to Improve Herd Health", u: "https://dairy.extension.wisc.edu/article-topic/automatic-milking-systems-ams/", d: "A farm shares insights into how they use their AMS data." },
-    { t: "Data Ownership and Privacy in Dairy Farming", u: "https://dairy.extension.wisc.edu/article-topic/automatic-milking-systems-ams/", d: "A journal article exploring data ownership and privacy." },
+    { t: "Using AMS Data to Improve Herd Health", u: "https://youtu.be/5beSunxn-5c?si=CJ7guynMu2sPdmnH", d: "A farm shares insights into how they use their AMS data.", video: true },
+    { t: "Data Ownership and Privacy in Dairy Farming", u: "https://doi.org/10.3390/ani15040524", d: "A journal article exploring data ownership and privacy.", journal: true },
     { t: "AI in Agriculture", u: "https://cropsandsoils.extension.wisc.edu/articles/ai-in-agriculture/", d: "How AI tools are used for crop production, decision support, and problem-solving." }
   ],
   labor: [
@@ -644,7 +643,10 @@ const RESOURCES = {
     { t: "Udderly Essential AMS Maintenance Tips", u: "https://dairy.extension.wisc.edu/articles/udderly-essential-ams-maintenance-tips/", d: "Maintenance tasks to support the smooth operation of AMS." },
     WIEGEL, JENLAR, AUTOMATION_HUB, AMS_GLOSSARY
   ],
-  adapt: [ FUTURE, BALANCING, WIEGEL, AUTOMATION_HUB ],
+  adapt: [
+    { t: "Capacity and Breakeven Analysis", u: "https://farms.extension.wisc.edu/articles/is-my-farm-operation-big-enough/", d: "Calculate capacity needed to achieve profit goals." },
+    BALANCING, WIEGEL, AUTOMATION_HUB
+  ],
   stake: [
     { t: "Ag Land Pricing and Contracts", u: "https://farms.extension.wisc.edu/article-topic/pricing-and-contracts/", d: "Contract terms and the fine print, including your data rights." },
     { t: "Farm Succession Resources", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Family, ownership, and stakeholder communication." },
@@ -703,16 +705,21 @@ CATEGORIES.forEach((cat, ci) => {
 
     const q = document.createElement("div");
     q.className = "q";
+    q.id = "q-" + cat.key + "-" + si;
     q.textContent = text;
     stmt.appendChild(q);
 
     const seg = document.createElement("div");
     seg.className = "seg";
+    seg.setAttribute("role", "radiogroup");
+    seg.setAttribute("aria-labelledby", q.id);
     for (let v = 1; v <= 5; v++) {
       const b = document.createElement("button");
       b.type = "button";
       b.innerHTML = v + "<small>" + SCALE[v - 1] + "</small>";
-      b.setAttribute("aria-label", v + " " + SCALE[v - 1]);
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", "false");
+      b.setAttribute("aria-label", v + " " + SCALE[v - 1] + ", " + text);
       b.addEventListener("click", () => {
         scores[ci][si] = (scores[ci][si] === v) ? null : v;
         renderSegState(seg, scores[ci][si]);
@@ -742,7 +749,11 @@ CATEGORIES.forEach((cat, ci) => {
 });
 
 function renderSegState(seg, val) {
-  Array.from(seg.children).forEach((btn, i) => btn.classList.toggle("on", (i + 1) === val));
+  Array.from(seg.children).forEach((btn, i) => {
+    const on = (i + 1) === val;
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-checked", on ? "true" : "false");
+  });
 }
 function updateStmtPrint(stmt, val) {
   stmt.querySelector(".print-only").textContent =
@@ -771,6 +782,8 @@ function showTab(which) {
   paneAssess.hidden = res;
   tabResBtn.classList.toggle("on", res);
   tabAssessBtn.classList.toggle("on", !res);
+  tabResBtn.setAttribute("aria-selected", res ? "true" : "false");
+  tabAssessBtn.setAttribute("aria-selected", res ? "false" : "true");
   if (res) renderResources();
   else if (step >= RESULTS_STEP && !reviewMode) drawWheel();
   updateFoot();
@@ -797,7 +810,9 @@ function renderResources() {
     h += '<p class="why">' + RES_WHY[cat.key] + "</p>";
     (RESOURCES[cat.key] || []).forEach(r => {
       h += '<a class="reslink" href="' + r.u + '" target="_blank" rel="noopener">' +
-           '<span class="t">' + r.t + (r.pdf ? '<span class="pdf">PDF</span>' : "") + "</span>" +
+           '<span class="t">' + r.t + (r.pdf ? '<span class="pdf">PDF</span>' : "") +
+             (r.video ? '<span class="pdf">Video</span>' : "") +
+             (r.journal ? '<span class="pdf">Journal</span>' : "") + "</span>" +
            '<span class="d">' + r.d + "</span></a>";
     });
     g.innerHTML = h;
@@ -1014,6 +1029,19 @@ const WHEEL_LABELS = [
   ["Labor &", "Training"], ["Support"], ["Adaptability"], ["Stakeholder", "Mgmt"], ["Production"]
 ];
 
+function describeWheel() {
+  const parts = CATEGORIES.map((cat, i) => {
+    const a = catAverage(i);
+    if (a === null) return cat.label + " not rated";
+    return cat.label + " " + a.toFixed(1) + (isFlagged(i) ? ", flagged" : "");
+  });
+  const n = CATEGORIES.filter((c, i) => isFlagged(i)).length;
+  const lead = n === 0
+    ? "Technology Readiness Wheel. No categories flagged. "
+    : "Technology Readiness Wheel. " + n + (n === 1 ? " category" : " categories") + " flagged at 3 or lower. ";
+  canvas.setAttribute("aria-label", lead + "Averages out of 5: " + parts.join("; ") + ".");
+}
+
 function drawWheel() {
   const holder = canvas.parentElement;
   const size = Math.max(300, Math.round(holder.clientWidth || 520));
@@ -1106,6 +1134,8 @@ function drawWheel() {
     ctx.fillStyle = p.flagged ? RED : NEUTRAL; ctx.fill();
     ctx.strokeStyle = "#fff"; ctx.lineWidth = p.flagged ? 2 : 1.5; ctx.stroke();
   });
+
+  describeWheel();
 
   for (let i = 0; i < n; i++) {
     const a = start + i * step2, cos = Math.cos(a), sin = Math.sin(a);
