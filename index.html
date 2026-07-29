@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root {
     --red: #C5050C;
@@ -19,6 +20,7 @@
     --panel: #f7f6f4;
     --flag-bg: #fbeceb;
     --ok: #2e7d32;
+    --blue: #005691;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
   }
 
@@ -94,9 +96,10 @@
   }
   .stepHead .sh-title {
     font-family: "Red Hat Display", sans-serif; font-weight: 900;
-    font-size: clamp(22px, 3.4vw, 30px); line-height: 1.1;
+    font-size: clamp(20px, 2.8vw, 26px); line-height: 1.1;
     margin: 2px 0 0; color: var(--ink);
   }
+  .stepHead .sh-sub { font-size: 15px; color: var(--muted); margin: 4px 0 0; }
 
   /* Review mode */
   .reviewbar[hidden] { display: none !important; }
@@ -112,15 +115,21 @@
   }
   .reviewbar .rb-text span { font-size: 14px; color: var(--muted); }
   #cats.reviewing .cat { margin-bottom: 18px; }
+  #cats:not(.reviewing) .cat-head,
+  #cats:not(.reviewing) .cat-sub { display: none; }
   .cat.flagged { border-color: var(--red); box-shadow: 0 0 0 2px var(--red), 0 6px 20px rgba(197,5,12,0.14); }
   .cat.flagged .cat-head .ttl { color: var(--red); }
+  .cat.passing { border-color: var(--ok); box-shadow: 0 0 0 2px var(--ok), 0 6px 20px rgba(46,125,50,0.12); }
+  .cat.passing .cat-head .ttl { color: var(--ok); }
+  .cat.passing .cat-head .idx { background: var(--ok); }
 
   /* Resources tab */
   .reslead { color: var(--muted); margin: 22px 0 20px; }
   .resgroup { margin-bottom: 16px; padding: 18px 20px; }
   .resgroup.flagged { border-color: var(--red); box-shadow: 0 0 0 2px var(--red), 0 6px 20px rgba(197,5,12,0.14); background: #fffafa; }
+  .resgroup.passing { border-color: var(--ok); box-shadow: 0 0 0 2px var(--ok), 0 6px 20px rgba(46,125,50,0.12); background: #fafcfa; }
   .resgroup h3 {
-    font-family: "Red Hat Display", sans-serif; font-size: 18px; margin: 0 0 2px;
+    font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 24px; color: var(--red); margin: 0 0 2px;
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   }
   .resgroup.flagged h3 { color: var(--red); }
@@ -128,6 +137,7 @@
     font-size: 12px; font-weight: 800; color: #fff; background: var(--red);
     padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em;
   }
+  .resgroup .fl.ok { background: var(--ok); }
   .resgroup .sc { font-size: 12.5px; font-weight: 700; color: var(--muted); }
   .resgroup .why { font-size: 13.5px; color: var(--muted); margin: 0 0 10px; }
   .reslink { display: block; padding: 9px 0; border-top: 1px solid var(--grid); text-decoration: none; }
@@ -203,11 +213,11 @@
     width: 28px; height: 28px; border-radius: 50%;
     display: inline-grid; place-items: center; flex: 0 0 28px;
   }
-  .cat-head .ttl { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 24px; color: var(--ink); }
+  .cat-head .ttl { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 22px; color: var(--ink); }
   .cat-sub { font-size: 14.5px; color: var(--muted); margin: 0 0 6px 38px; }
 
   .stmt { padding: 16px 0 18px; border-top: 1px solid var(--grid); }
-  .stmt .q { font-size: 16.5px; line-height: 1.5; color: var(--ink); margin-bottom: 10px; }
+  .stmt .q { font-size: 19px; line-height: 1.45; color: var(--ink); margin-bottom: 12px; }
   .stmt.unrated .q::after {
     content: "required"; font-size: 12px; font-weight: 800; text-transform: uppercase;
     color: var(--red); background: var(--flag-bg); border: 1px solid #f3cfd0;
@@ -273,7 +283,7 @@
   .legend .legflag { vertical-align: middle; margin-right: 5px; }
 
   .flagcard { padding: 18px 22px; margin-bottom: 16px; border-left: 8px solid var(--red); background: var(--flag-bg); border-radius: 0 12px 12px 0; box-shadow: 0 3px 14px rgba(197,5,12,0.12); }
-  .flagcard h3 { font-family: "Red Hat Display", sans-serif; font-size: 19px; color: var(--red); margin: 0 0 4px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .flagcard h3 { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 26px; color: var(--red); margin: 0 0 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
   .flagcard h3 .sc { font-size: 14px; color: #fff; background: var(--red); padding: 2px 10px; border-radius: 20px; font-weight: 800; white-space: nowrap; }
   .flagcard .glabel { font-size: 13.5px; color: var(--muted); margin-bottom: 2px; }
   .flagcard ul { margin: 8px 0 0; padding-left: 20px; }
@@ -282,10 +292,10 @@
   .allgood { padding: 28px; text-align: center; border-radius: 14px; background: #eef7ee; border: 1px solid #cfe6cf; color: #245c27; margin-bottom: 16px; }
   .allgood b { font-family: "Red Hat Display", sans-serif; font-size: 18px; }
 
-  .reflect { margin-top: 26px; padding: 22px 22px 10px; }
-  .reflect h3 { font-family: "Red Hat Display", sans-serif; font-size: 18px; margin: 0 0 4px; }
-  .reflect p.rl { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
-  .reflect label { display: block; font-size: 14px; font-weight: 700; margin: 14px 0 5px; }
+  .reflect { margin-top: 26px; padding: 24px 24px 12px; border-left: 6px solid var(--red); background: #fbfbfa; }
+  .reflect h3 { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 26px; margin: 0 0 4px; color: var(--red); }
+  .reflect p.rl { color: var(--muted); font-size: 15px; margin: 0 0 16px; }
+  .reflect label { display: block; font-size: 17px; font-weight: 700; margin: 20px 0 6px; line-height: 1.4; color: var(--ink); }
   .reflect textarea {
     width: 100%; min-height: 58px; resize: vertical; padding: 10px 12px;
     border: 1px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
@@ -303,28 +313,72 @@
   .print-only { display: none; }
 
   @media print {
-    @page { margin: 14mm; }
+    @page { margin: 12mm; }
     body { font-size: 12px; }
     .wrap { max-width: none; padding: 0; }
-    .progress, .nav, .scalekey, .seg, .actions, .hero p.lead, .tabs, .res-jump, .reviewbar { display: none !important; }
-    #paneAssess, #paneRes { display: block !important; }
-    #paneRes[hidden] { display: block !important; }
-    .foot { display: block !important; }
-    .hero { display: block !important; }
-    .resgroup { page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
-    .reslink .d { font-size: 11px; }
-    .reslink .t::after { content: " (" attr(href) ")"; font-weight: 500; font-size: 10px; color: #666; word-break: break-all; }
-    .cat { display: block !important; page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; margin-bottom: 10px; padding: 12px 14px; }
-    .cat-head .ttl { font-size: 16px; }
-    .stmt { padding: 6px 0 7px; }
-    .stmt .q { font-size: 12px; margin-bottom: 2px; }
+
+    /* force browsers to actually print the red/green fills */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    /* hide interactive chrome */
+    .progress, .nav, .scalekey, .seg, .actions, .hero p.lead, .tabs, .res-jump, .reviewbar,
+    #paneRes .reslead, #paneRes .askbox, .cat-sub { display: none !important; }
+
+    #paneAssess, #paneRes, .results, .foot, .hero { display: block !important; }
+
+    /* ---- category cards: clear, solid, colored, one never split ---- */
+    .cat {
+      display: block !important; page-break-inside: avoid;
+      box-shadow: none !important; border: 1.5px solid #ccc; border-radius: 8px;
+      margin: 0 0 10px; padding: 10px 14px;
+    }
+    .cat.flagged { border: 2px solid var(--red); background: #fdf1f1; }
+    .cat.passing { border: 2px solid var(--ok); background: #f0f7f0; }
+    .cat-head { margin-bottom: 2px; }
+    .cat-head .idx { width: 22px; height: 22px; flex: 0 0 22px; font-size: 12px; }
+    .cat-head .ttl { font-size: 18px; }
+    .cat.flagged .cat-head .ttl { color: var(--red); }
+    .cat.passing .cat-head .ttl { color: var(--ok); }
+    .stmt { padding: 5px 0; }
+    .stmt .q { font-size: 11.5px; margin-bottom: 1px; }
     .stmt.unrated .q::after { display: none; }
-    .print-only { display: block; font-size: 11.5px; }
-    .results { display: block !important; }
-    .wheel-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; max-width: 480px; margin: 0 auto 14px; }
-    .flagcard, .summary, .allgood { page-break-inside: avoid; }
-    .card, .flagcard, .allgood, .cat { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .reflect textarea { border: 1px solid #ccc; }
+    .cat-avg { margin-top: 6px; padding-top: 6px; font-size: 11px; }
+    .cat-avg b { font-size: 15px; }
+    .cat-avg.flag b { color: var(--red); }
+    .cat-avg.good b { color: var(--ok); }
+    .print-only { display: block; font-size: 11px; color: #333; }
+
+    /* ---- results: start on a fresh page ---- */
+    .results { page-break-before: always; }
+    .wheel-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; max-width: 460px; margin: 0 auto 14px; }
+    .flagcard { page-break-inside: avoid; box-shadow: none; }
+    .allgood { page-break-inside: avoid; }
+
+    /* ---- reflection: keep together ---- */
+    .reflect { page-break-inside: avoid; border: 1px solid var(--red); background: #fff; border-left: 6px solid var(--red); margin: 0 0 16px; padding: 14px 16px; }
+    #paneRes { margin-top: 8px; }
+    .reflect h3 { font-size: 18px; }
+    .reflect label { font-size: 13px; margin: 10px 0 3px; }
+    .reflect textarea { min-height: 30px; border: 1px solid #bbb; }
+
+    /* Chrome drops clickable link annotations in the PDF when the anchor sits inside
+       an element with overflow:hidden or border-radius clipping. Neutralize both so the
+       resource links stay clickable in the saved PDF. */
+    .card, .resgroup, .reflect, .cat, .flagcard, #paneRes, #paneAssess, .results, .wrap {
+      overflow: visible !important; border-radius: 0 !important;
+    }
+    a[href] { text-decoration: none; }
+
+    /* ---- Extension resources: print only the flagged categories, in clear red boxes ---- */
+    #paneRes .resgroup { page-break-inside: avoid; box-shadow: none; margin: 0 0 10px; padding: 12px 16px; }
+    #paneRes .resgroup:not(.flagged) { display: none !important; }
+    #paneRes .resgroup.flagged { border: 2px solid var(--red); background: #fdf1f1; }
+    #paneRes .resgroup.flagged h3 { color: var(--red); }
+    .reslink { padding: 6px 0; }
+    .reslink .t { font-size: 12.5px; }
+    .reslink .d { font-size: 11px; }
+
+    .foot { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -334,7 +388,7 @@
 
   <section class="hero" id="hero">
     <h1>Farm Tech Ready</h1>
-    <p class="sub">Are you ready to adopt new technology? Find out where you stand, and what resources can help.</p>
+    <p class="sub">Are you ready to adopt a new technology? Discover where you stand and explore resources that can help you take the next step.</p>
   </section>
 
   <div class="tabs" role="tablist" id="tabs">
@@ -344,7 +398,7 @@
 
   <div id="paneAssess" role="tabpanel" aria-labelledby="tabAssessBtn">
 
-  <p class="lead" id="lead">Rate your readiness to adopt new technology on your farm across nine categories, then explore Extension resources for the areas that need work. Results are not saved or shared, but users can save or print them at the end of the assessment.</p>
+  <p class="lead" id="lead">Rate your readiness to adopt new technology on your farm across nine categories, then explore UW-Madison Extension resources for the areas that need work. We do not save or share your results. You can print them at the end of the assessment.</p>
 
   <div class="startbox" id="startbox">
     <div class="sb-meta">27 statements &middot; about 10 minutes</div>
@@ -374,6 +428,7 @@
     <div class="sh-text">
       <span class="sh-kicker" id="shKicker">Category 1 of 9</span>
       <h2 class="sh-title" id="shTitle">Business Goals</h2>
+      <p class="sh-sub">Rate all three statements.</p>
     </div>
   </div>
 
@@ -424,10 +479,10 @@
     </div>
 
     <div class="actions">
-      <button class="btn primary" id="printBtn" type="button">Save or print my results</button>
       <button class="btn ghost" id="reviewBtn" type="button">Review my answers</button>
-      <button class="btn ghost" id="resetBtn" type="button">Start over</button>
+      <button class="btn ghost" id="pdfBtn" type="button">Print</button>
       <button class="btn ghost" id="resBtn" type="button">Extension resources</button>
+      <button class="btn ghost" id="resetBtn" type="button">Start over</button>
     </div>
   </section>
 
@@ -614,7 +669,7 @@ const RESOURCES = {
     { t: "Before You Buy: A Farm Tech Investment Planning Guide", u: "https://farms.extension.wisc.edu/articles/before-you-buy-a-farm-tech-investment-planning-guide/", d: "Build the plan before the purchase: costs, payback, and pitfalls." },
     { t: "Making the Switch to Robots: AMS Transition Budgeter", u: "https://dairy.extension.wisc.edu/articles/making-the-switch-to-robots-a-new-budgeting-tool-for-transitioning-to-automatic-milking-systems/", d: "A web-based tool to model the long-term finances of going robotic." },
     STRATEGY,
-    { t: "Financial Analysis: Cost of Production and Sensitivity Analysis", u: "https://youtu.be/4CY-Demoo1E?si=szYOwSjTAWczZUN9", d: "Analyze profitability impacts of technology adoption.", video: true },
+    { t: "Financial Analysis: Cost of Production and Sensitivity Analysis", u: "https://youtu.be/4CY-Demoo1E?si=szYOwSjTAWczZUN9", d: "Analyze profitability impacts of technology adoption." },
     { t: "Financial Management", u: "https://farms.extension.wisc.edu/article-topic/financial-strategic-management/", d: "Budgeting, ROI, and financial decision-making resources." }
   ],
   infra: [
@@ -626,8 +681,8 @@ const RESOURCES = {
   connect: [
     { t: "Broadband: access, adoption, and infrastructure", u: "https://economicdevelopment.extension.wisc.edu/topics/broadband/", d: "Extension's broadband program, including rural access and connectivity resources." },
     { t: "Large Language Models: A Powerful New Tool for Wisconsin Agriculture", u: "https://farms.extension.wisc.edu/articles/large-language-models-a-powerful-new-tool-for-wisconsin-agriculture/", d: "How connected AI tools are reshaping agricultural work." },
-    { t: "Using AMS Data to Improve Herd Health", u: "https://youtu.be/5beSunxn-5c?si=CJ7guynMu2sPdmnH", d: "A farm shares insights into how they use their AMS data.", video: true },
-    { t: "Data Ownership and Privacy in Dairy Farming", u: "https://doi.org/10.3390/ani15040524", d: "A journal article exploring data ownership and privacy.", journal: true },
+    { t: "Using AMS Data to Improve Herd Health", u: "https://youtu.be/5beSunxn-5c?si=CJ7guynMu2sPdmnH", d: "A farm shares insights into how they use their AMS data." },
+    { t: "Data Ownership and Privacy in Dairy Farming", u: "https://doi.org/10.3390/ani15040524", d: "A journal article exploring data ownership and privacy." },
     { t: "AI in Agriculture", u: "https://cropsandsoils.extension.wisc.edu/articles/ai-in-agriculture/", d: "How AI tools are used for crop production, decision support, and problem-solving." }
   ],
   labor: [
@@ -693,7 +748,7 @@ CATEGORIES.forEach((cat, ci) => {
 
   const sub = document.createElement("p");
   sub.className = "cat-sub";
-  sub.textContent = "How aware and ready am I? Rate all three statements.";
+  sub.textContent = "Rate all three statements.";
   card.appendChild(sub);
 
   cat.statements.forEach((text, si) => {
@@ -800,17 +855,18 @@ function renderResources() {
 
   order.forEach(({ cat, ci, flagged, avg }) => {
     const g = document.createElement("div");
-    g.className = "card resgroup" + (flagged ? " flagged" : "");
+    const passing = isComplete(ci) && avg !== null && avg > 3;
+    g.className = "card resgroup" + (flagged ? " flagged" : passing ? " passing" : "");
     let h = "<h3>" + cat.label;
     if (flagged) h += ' <span class="fl">Needs attention</span>';
+    if (passing) h += ' <span class="fl ok">Meets expectations</span>';
     if (avg !== null && isComplete(ci)) h += ' <span class="sc">Your average ' + avg.toFixed(1) + "</span>";
     h += "</h3>";
     h += '<p class="why">' + RES_WHY[cat.key] + "</p>";
     (RESOURCES[cat.key] || []).forEach(r => {
       h += '<a class="reslink" href="' + r.u + '" target="_blank" rel="noopener">' +
            '<span class="t">' + r.t + (r.pdf ? '<span class="pdf">PDF</span>' : "") +
-             (r.video ? '<span class="pdf">Video</span>' : "") +
-             (r.journal ? '<span class="pdf">Journal</span>' : "") + "</span>" +
+             "</span>" +
            '<span class="d">' + r.d + "</span></a>";
     });
     g.innerHTML = h;
@@ -856,10 +912,12 @@ function refresh() {
     const done = isComplete(ci);
     el.className = "cat-avg" + (done ? (avg <= 3 ? " flag" : " good") : "");
     const note = done
-      ? (avg <= 3 ? "Category average (needs attention)" : "Category average")
+      ? (avg <= 3 ? "Category average (needs attention)" : "Category average (meets expectations)")
       : "Category average (rate all three)";
     el.innerHTML = '<span class="note">' + note + "</span><b>" + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</b>";
-    document.getElementById("cat-" + cat.key).classList.toggle("flagged", done && avg <= 3);
+    const card = document.getElementById("cat-" + cat.key);
+    card.classList.toggle("flagged", reviewMode && done && avg <= 3);
+    card.classList.toggle("passing", reviewMode && done && avg > 3);
   });
 
   // progress
@@ -954,7 +1012,34 @@ document.getElementById("startBtn").addEventListener("click", () => showStep(0))
 document.getElementById("reviewBtn").addEventListener("click", () => showReview());
 document.getElementById("resBtn").addEventListener("click", () => showTab("res"));
 document.getElementById("backToResults").addEventListener("click", () => showStep(RESULTS_STEP));
-document.getElementById("printBtn").addEventListener("click", () => window.print());
+function preparePrint() {
+  renderResults();
+  renderResources();
+  drawWheel();
+  // Chrome only creates clickable PDF link annotations for content that was genuinely
+  // laid out and painted, not for content flipped from display:none via print media.
+  document.body.classList.add("printing");
+  paneAssess.hidden = false;
+  paneRes.hidden = false;
+  // Chrome skips link annotations for target="_blank" anchors when printing, so make
+  // every link a plain same-tab anchor for the print, then restore afterward.
+  document.querySelectorAll('a[target="_blank"]').forEach(a => {
+    a.dataset.printTarget = "1";
+    a.removeAttribute("target");
+    a.removeAttribute("rel");
+  });
+}
+function restoreAfterPrint() {
+  document.body.classList.remove("printing");
+  const onRes = tabResBtn.classList.contains("on");
+  paneRes.hidden = !onRes;
+  paneAssess.hidden = onRes;
+  document.querySelectorAll('a[data-print-target]').forEach(a => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener");
+    delete a.dataset.printTarget;
+  });
+}
 document.getElementById("resetBtn").addEventListener("click", () => {
   if (!confirm("Clear all scores and reflection notes and start over?")) return;
   scores.forEach(row => row.fill(null));
@@ -1176,7 +1261,175 @@ if (typeof ResizeObserver !== "undefined") {
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => { if (step >= RESULTS_STEP) drawWheel(); });
 }
-window.addEventListener("beforeprint", () => { renderResults(); drawWheel(); });
+window.addEventListener("beforeprint", preparePrint);
+window.addEventListener("afterprint", restoreAfterPrint);
+/* Safari and some browsers do not fire beforeprint/afterprint reliably; matchMedia covers them */
+if (window.matchMedia) {
+  const mq = window.matchMedia("print");
+  mq.addListener(m => { if (m.matches) preparePrint(); else restoreAfterPrint(); });
+}
+
+/* ---------- PDF report with clickable links ---------- */
+function buildPdf() {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert("The PDF library could not load. Check your internet connection, or use Print instead.");
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const PW = 612, PH = 792, M = 54, W = PW - M * 2;
+  const RED2 = [197, 5, 12], GREEN2 = [46, 125, 50], BLUE2 = [17, 85, 204], INK = [26, 26, 26], MUT = [90, 90, 90];
+  let y = M;
+
+  const ensure = h => { if (y + h > PH - M) { doc.addPage(); y = M; } };
+  const wrap = (txt, size, width) => { doc.setFontSize(size); return doc.splitTextToSize(txt, width); };
+
+  function heading(txt, size, color) {
+    ensure(size + 14);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(size);
+    doc.setTextColor(color[0], color[1], color[2]);
+    doc.text(txt, M, y);
+    y += size + 8;
+  }
+  function para(txt, size, color) {
+    const lines = wrap(txt, size, W);
+    ensure(lines.length * (size + 3) + 4);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(size);
+    doc.setTextColor(color[0], color[1], color[2]);
+    doc.text(lines, M, y);
+    y += lines.length * (size + 3) + 4;
+  }
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(24); doc.setTextColor(RED2[0],RED2[1],RED2[2]);
+  doc.text("Farm Tech Ready", M, y); y += 26;
+  doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+  doc.text("Technology readiness self-assessment results", M, y); y += 14;
+  doc.text(new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }), M, y); y += 24;
+
+  // Readiness Wheel image
+  try {
+    drawWheel();
+    const canvas = document.getElementById("wheel");
+    if (canvas && canvas.width > 0) {
+      const img = canvas.toDataURL("image/png");
+      const iw = 300, ih = 300;
+      ensure(ih + 10);
+      doc.addImage(img, "PNG", (PW - iw) / 2, y, iw, ih);
+      y += ih + 14;
+    }
+  } catch (e) { /* wheel unavailable, continue without it */ }
+
+  heading("Category results", 15, INK);
+  CATEGORIES.forEach((cat, ci) => {
+    const avg = catAverage(ci);
+    const fl = isFlagged(ci);
+    const pass = isComplete(ci) && avg !== null && avg > 3;
+    ensure(20);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11);
+    const c = fl ? RED2 : pass ? GREEN2 : INK;
+    doc.setTextColor(c[0],c[1],c[2]);
+    doc.text(cat.label, M, y);
+    const val = avg === null ? "-" : avg.toFixed(1);
+    const tag = fl ? "  (needs attention)" : pass ? "  (meets expectations)" : "";
+    doc.text(val + tag, M + 290, y);
+    y += 16;
+  });
+  y += 8;
+
+  heading("Your ratings", 15, INK);
+  CATEGORIES.forEach((cat, ci) => {
+    ensure(40);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+    const hc = isFlagged(ci) ? RED2 : GREEN2;
+    doc.setTextColor(hc[0],hc[1],hc[2]);
+    doc.text((ci + 1) + ". " + cat.label, M, y); y += 15;
+    cat.statements.forEach((st, si) => {
+      const v = scores[ci][si];
+      const lines = wrap(st, 9.5, W - 14);
+      ensure(lines.length * 12 + 14);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(INK[0],INK[1],INK[2]);
+      doc.text(lines, M + 14, y); y += lines.length * 12;
+      doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+      doc.text(v ? "Rated: " + v + " (" + SCALE[v - 1] + ")" : "Not rated", M + 14, y); y += 14;
+    });
+    y += 4;
+  });
+
+  const flags = CATEGORIES.map((c, i) => i).filter(i => isFlagged(i));
+  if (flags.length) {
+    doc.addPage(); y = M;
+    heading("Categories that need attention", 15, RED2);
+    para("Work through the guiding questions for each flagged category.", 10, MUT);
+    flags.forEach(ci => {
+      const cat = CATEGORIES[ci];
+      ensure(30);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.setTextColor(RED2[0],RED2[1],RED2[2]);
+      doc.text(cat.label + "  (average " + catAverage(ci).toFixed(1) + ")", M, y); y += 16;
+      cat.questions.forEach(q => {
+        const lines = wrap("\u2022  " + q, 9.5, W - 10);
+        ensure(lines.length * 12 + 2);
+        doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(INK[0],INK[1],INK[2]);
+        doc.text(lines, M + 10, y); y += lines.length * 12 + 2;
+      });
+      y += 10;
+    });
+  }
+
+  const answers = [...document.querySelectorAll(".reflect textarea")];
+  const labels = [...document.querySelectorAll(".reflect label")].map(l => l.textContent);
+  if (answers.some(t => t.value.trim())) {
+    ensure(60);
+    heading("Reflection notes", 15, INK);
+    answers.forEach((t, i) => {
+      if (!t.value.trim()) return;
+      const ql = wrap(labels[i], 10, W);
+      const al = wrap(t.value.trim(), 10, W - 10);
+      ensure(ql.length * 13 + al.length * 13 + 10);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(INK[0],INK[1],INK[2]);
+      doc.text(ql, M, y); y += ql.length * 13;
+      doc.setFont("helvetica", "normal"); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+      doc.text(al, M + 10, y); y += al.length * 13 + 8;
+    });
+  }
+
+  if (flags.length) {
+    doc.addPage(); y = M;
+    heading("Recommended Extension resources", 15, RED2);
+    para("Resources from UW-Madison Extension for your flagged categories.", 10, MUT);
+    flags.forEach(ci => {
+      const cat = CATEGORIES[ci];
+      ensure(26);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.setTextColor(RED2[0],RED2[1],RED2[2]);
+      doc.text(cat.label, M, y); y += 16;
+      (RESOURCES[cat.key] || []).forEach(r => {
+        const tl = wrap(r.t, 10.5, W - 10);
+        const dl = wrap(r.d, 9, W - 10);
+        ensure(tl.length * 13 + dl.length * 11 + 8);
+        doc.setFont("helvetica", "bold"); doc.setFontSize(10.5);
+        doc.setTextColor(BLUE2[0],BLUE2[1],BLUE2[2]);
+        doc.setDrawColor(BLUE2[0],BLUE2[1],BLUE2[2]);
+        doc.setLineWidth(0.75);
+        tl.forEach(ln => {
+          doc.textWithLink(ln, M + 10, y, { url: r.u });
+          const lw = doc.getTextWidth(ln);
+          doc.line(M + 10, y + 1.8, M + 10 + lw, y + 1.8);
+          y += 13;
+        });
+        doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+        doc.text(dl, M + 10, y); y += dl.length * 11 + 6;
+      });
+      y += 8;
+    });
+  }
+
+  ensure(40);
+  y = Math.max(y, PH - M - 30);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+  doc.text(doc.splitTextToSize("Developed by the Investment in Tech and Automation Workgroup with the UW-Madison Division of Extension. farms.extension.wisc.edu/technology", W), M, y);
+
+  doc.save("Farm-Tech-Ready-results.pdf");
+}
+document.getElementById("pdfBtn").addEventListener("click", buildPdf);
 
 /* init */
 showStep(NOT_STARTED);
