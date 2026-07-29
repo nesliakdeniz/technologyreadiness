@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farm Tech Ready</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --red: #C5050C;
+    --red-dark: #9B0000;
+    --ink: #1a1a1a;
+    --muted: #4a4a4a;
+    --line: #cfcfcf;
+    --grid: #e2e2e2;
+    --bg: #ffffff;
+    --panel: #f7f6f4;
+    --flag-bg: #fbeceb;
+    --ok: #2e7d32;
+    --blue: #005691;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--ink);
+    font-family: "Red Hat Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px; font-weight: 500; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* Hero */
+  .hero { padding: 44px 0 4px; }
+  .hero h1 {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    font-size: clamp(28px, 4.4vw, 42px); line-height: 1.05;
+    margin: 0 0 8px; color: var(--red); letter-spacing: -0.01em;
+  }
+  .hero .sub { font-style: italic; color: var(--muted); font-size: 18px; margin: 0; max-width: 680px; line-height: 1.45; }
+  p.lead { margin: 22px 0 0; color: #3a3a3a; }
+
+  .card {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: var(--shadow);
+  }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--line); margin: 26px 0 0; }
+  .tab {
+    font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 19px;
+    padding: 18px 30px; border: 0; background: none; color: var(--muted);
+    cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -2px;
+    display: flex; align-items: center; gap: 10px; border-radius: 10px 10px 0 0;
+  }
+  .tab:hover { color: var(--red); background: #faf7f7; }
+  .tab.on { color: var(--red); border-bottom-color: var(--red); }
+  .tab:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: -3px; }
+  .tabcount {
+    display: none; font-size: 13px; font-weight: 800; color: #fff; background: var(--red);
+    border-radius: 12px; padding: 2px 9px; letter-spacing: 0.02em;
+  }
+  .tabcount.show { display: inline-block; }
+  @media (max-width: 560px) {
+    .tab { font-size: 16px; padding: 14px 16px; flex: 1; justify-content: center; }
+  }
+
+  /* Start screen */
+  .startbox { margin: 26px 0 10px; }
+  .startbox[hidden] { display: none !important; }
+  .startbox .sb-meta { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .btn-lg { font-size: 18px; padding: 16px 34px; }
+
+  /* Step header */
+  .stepHead[hidden] { display: none !important; }
+  .stepHead {
+    display: flex; align-items: center; gap: 14px;
+    margin: 24px 0 16px; padding-bottom: 14px;
+    border-bottom: 3px solid var(--red);
+  }
+  .stepHead .sh-num {
+    flex: 0 0 44px; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 20px;
+    display: inline-grid; place-items: center;
+  }
+  .stepHead .sh-kicker {
+    display: block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .stepHead .sh-title {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    font-size: clamp(20px, 2.8vw, 26px); line-height: 1.1;
+    margin: 2px 0 0; color: var(--ink);
+  }
+  .stepHead .sh-sub { font-size: 15px; color: var(--muted); margin: 4px 0 0; }
+
+  /* Review mode */
+  .reviewbar[hidden] { display: none !important; }
+  .reviewbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: var(--panel); border: 1px solid var(--line); border-left: 6px solid var(--red);
+    border-radius: 12px; padding: 16px 20px; margin: 24px 0 18px;
+    position: sticky; top: 10px; z-index: 5;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .reviewbar .rb-text strong {
+    display: block; font-family: "Red Hat Display", sans-serif; font-size: 18px; color: var(--ink);
+  }
+  .reviewbar .rb-text span { font-size: 14px; color: var(--muted); }
+  #cats.reviewing .cat { margin-bottom: 18px; }
+  #cats:not(.reviewing) .cat-head,
+  #cats:not(.reviewing) .cat-sub { display: none; }
+  .cat.flagged { border-color: var(--red); box-shadow: 0 0 0 2px var(--red), 0 6px 20px rgba(197,5,12,0.14); }
+  .cat.flagged .cat-head .ttl { color: var(--red); }
+  .cat.passing { border-color: var(--ok); box-shadow: 0 0 0 2px var(--ok), 0 6px 20px rgba(46,125,50,0.12); }
+  .cat.passing .cat-head .ttl { color: var(--ok); }
+  .cat.passing .cat-head .idx { background: var(--ok); }
+
+  /* Resources tab */
+  .reslead { color: var(--muted); margin: 22px 0 20px; }
+  .resgroup { margin-bottom: 16px; padding: 18px 20px; }
+  .resgroup.flagged { border-color: var(--red); box-shadow: 0 0 0 2px var(--red), 0 6px 20px rgba(197,5,12,0.14); background: #fffafa; }
+  .resgroup.passing { border-color: var(--ok); box-shadow: 0 0 0 2px var(--ok), 0 6px 20px rgba(46,125,50,0.12); background: #fafcfa; }
+  .resgroup h3 {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 24px; color: var(--red); margin: 0 0 2px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .resgroup.flagged h3 { color: var(--red); }
+  .resgroup .fl {
+    font-size: 12px; font-weight: 800; color: #fff; background: var(--red);
+    padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .resgroup .fl.ok { background: var(--ok); }
+  .resgroup .sc { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .resgroup .why { font-size: 13.5px; color: var(--muted); margin: 0 0 10px; }
+  .reslink { display: block; padding: 9px 0; border-top: 1px solid var(--grid); text-decoration: none; }
+  .reslink:first-of-type { border-top: 1px solid var(--grid); }
+  .reslink .t { color: var(--red); font-weight: 700; font-size: 15px; text-decoration: none; }
+  .reslink:hover .t { text-decoration: underline; }
+  .reslink .d { color: var(--muted); font-size: 13.5px; display: block; margin-top: 1px; }
+  .reslink .pdf { font-size: 12px; font-weight: 800; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; }
+
+  .askbox { padding: 20px 22px; margin-top: 24px; background: var(--panel); }
+  .askbox h3 { font-family: "Red Hat Display", sans-serif; font-size: 17px; margin: 0 0 4px; }
+  .askbox p { margin: 0 0 6px; font-size: 14.5px; color: var(--muted); }
+  .askbox .asklinks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 8px; }
+  .askbox a { color: var(--red); font-weight: 700; }
+
+  .res-jump {
+    display: inline-block; margin-top: 10px; font-size: 13.5px; font-weight: 700;
+    color: var(--red); background: none; border: 0; padding: 0; cursor: pointer;
+    font-family: inherit; text-decoration: underline;
+  }
+
+  /* Progress */
+  .progress { margin: 34px 0 18px; }
+  .prog-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px; gap: 12px;
+  }
+  .prog-top .step {
+    font-family: "Red Hat Display", sans-serif; font-weight: 700;
+    font-size: 15px; color: var(--ink);
+  }
+  .prog-top .pct { font-size: 15px; font-weight: 700; color: var(--red); font-variant-numeric: tabular-nums; }
+  .pbar { height: 10px; border-radius: 6px; background: var(--grid); overflow: hidden; }
+  .pbar span {
+    display: block; height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--red), #e0393f);
+    border-radius: 6px; transition: width .35s ease;
+  }
+  .dots { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .dots i {
+    height: 5px; flex: 1 1 0; min-width: 10px; border-radius: 3px;
+    background: var(--grid); transition: background .25s ease;
+  }
+  .dots i.done { background: var(--red); }
+  .dots i.now { background: #f0a6a9; }
+
+  /* Scale key */
+  .scalekey {
+    display: flex; flex-wrap: nowrap; gap: 0 12px;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 11px 14px; margin: 0 0 18px;
+    font-size: 14px; color: var(--muted); align-items: center;
+    justify-content: space-between;
+  }
+  .scalekey span { white-space: nowrap; }
+  .scalekey .sk-label { font-weight: 700; color: var(--ink); flex: 0 0 auto; }
+  .scalekey b {
+    color: #fff; background: var(--red); border-radius: 5px;
+    padding: 1px 6px; margin-right: 4px; font-weight: 700; font-size: 13px;
+  }
+  @media (max-width: 700px) {
+    .scalekey { flex-wrap: wrap; gap: 8px 14px; justify-content: flex-start; }
+    .scalekey .sk-label { flex: 1 0 100%; }
+  }
+
+  /* Category card */
+  .cat { padding: 24px 24px 20px; display: none; }
+  .cat.active { display: block; }
+  .cat-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+  .cat-head .idx {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    color: #fff; background: var(--red); font-size: 14px;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-grid; place-items: center; flex: 0 0 28px;
+  }
+  .cat-head .ttl { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 22px; color: var(--ink); }
+  .cat-sub { font-size: 14.5px; color: var(--muted); margin: 0 0 6px 38px; }
+
+  .stmt { padding: 16px 0 18px; border-top: 1px solid var(--grid); }
+  .stmt .q { font-size: 19px; line-height: 1.45; color: var(--ink); margin-bottom: 12px; }
+  .stmt.unrated .q::after {
+    content: "required"; font-size: 12px; font-weight: 800; text-transform: uppercase;
+    color: var(--red); background: var(--flag-bg); border: 1px solid #f3cfd0;
+    padding: 1px 7px; border-radius: 10px; margin-left: 8px; letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .seg { display: flex; gap: 8px; }
+  .seg button {
+    flex: 1; padding: 13px 0; border: 1px solid var(--line); background: #fff;
+    border-radius: 10px; font-family: inherit; font-size: 17px; font-weight: 700;
+    color: #6a6a6a; cursor: pointer; transition: all .12s ease; line-height: 1.1;
+  }
+  .seg button small { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; margin-top: 3px; color: #9a9a9a; }
+  .seg button:hover { border-color: var(--red); color: var(--red); }
+  .seg button:hover small { color: var(--red); }
+  .seg button.on { background: var(--red); border-color: var(--red); color: #fff; }
+  .seg button.on small { color: #fff; }
+  .seg button:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: 1px; }
+  @media (max-width: 560px) { .seg button small { display: none; } }
+
+  .cat-avg {
+    margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--grid);
+    font-size: 14px; color: var(--muted); display: flex; justify-content: space-between; align-items: center;
+  }
+  .cat-avg b { font-family: "Red Hat Display", sans-serif; font-size: 20px; color: var(--ink); }
+  .cat-avg.flag b { color: var(--red); }
+  .cat-avg.good b { color: var(--ok); }
+  .cat-avg .note { font-size: 12.5px; }
+
+  /* Nav */
+  .nav { display: flex; align-items: center; gap: 14px; margin-top: 20px; }
+  .nav .spacer { flex: 1; }
+  .btn {
+    font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 16px;
+    padding: 13px 26px; border-radius: 10px; cursor: pointer; border: 2px solid var(--red);
+    transition: all .12s ease;
+  }
+  .btn.primary { background: var(--red); color: #fff; }
+  .btn.primary:hover:not(:disabled) { background: var(--red-dark); border-color: var(--red-dark); }
+  .btn.ghost { background: #fff; color: var(--red); }
+  .btn.ghost:hover { background: var(--flag-bg); }
+  .btn:disabled { background: #e9e9e9; border-color: #dcdcdc; color: #a5a5a5; cursor: not-allowed; }
+  .btn:focus-visible { outline: 3px solid rgba(197,5,12,0.35); outline-offset: 2px; }
+
+  /* Results */
+  .results { display: none; }
+  .results.active { display: block; }
+  .results > h2 {
+    font-family: "Red Hat Display", sans-serif; font-weight: 900;
+    font-size: 30px; color: var(--red); margin: 24px 0 6px;
+  }
+  .results .rlead { color: var(--muted); margin: 0 0 22px; }
+
+  .wheel-card { padding: 22px 22px 12px; margin-bottom: 26px; }
+  .wheel-card h3 { font-family: "Red Hat Display", sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 2px; }
+  .wheel-card .hint { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+  .canvas-holder { width: 100%; max-width: 520px; margin: 0 auto; }
+  canvas { width: 100%; height: auto; display: block; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 6px 4px 8px; font-size: 13.5px; color: var(--muted); }
+  .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .legend .plotted { background: #9b9b9b; }
+  .legend .thresh { width: 14px; height: 0; border-top: 2px solid var(--ink); border-radius: 0; }
+  .legend .legflag { vertical-align: middle; margin-right: 5px; }
+
+  .flagcard { padding: 18px 22px; margin-bottom: 16px; border-left: 8px solid var(--red); background: var(--flag-bg); border-radius: 0 12px 12px 0; box-shadow: 0 3px 14px rgba(197,5,12,0.12); }
+  .flagcard h3 { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 26px; color: var(--red); margin: 0 0 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .flagcard h3 .sc { font-size: 14px; color: #fff; background: var(--red); padding: 2px 10px; border-radius: 20px; font-weight: 800; white-space: nowrap; }
+  .flagcard .glabel { font-size: 13.5px; color: var(--muted); margin-bottom: 2px; }
+  .flagcard ul { margin: 8px 0 0; padding-left: 20px; }
+  .flagcard li { font-size: 14.5px; margin: 4px 0; color: #40302f; }
+
+  .allgood { padding: 28px; text-align: center; border-radius: 14px; background: #eef7ee; border: 1px solid #cfe6cf; color: #245c27; margin-bottom: 16px; }
+  .allgood b { font-family: "Red Hat Display", sans-serif; font-size: 18px; }
+
+  .reflect { margin-top: 26px; padding: 24px 24px 12px; border-left: 6px solid var(--red); background: #fbfbfa; }
+  .reflect h3 { font-family: "Red Hat Display", sans-serif; font-weight: 900; font-size: 26px; margin: 0 0 4px; color: var(--red); }
+  .reflect p.rl { color: var(--muted); font-size: 15px; margin: 0 0 16px; }
+  .reflect label { display: block; font-size: 17px; font-weight: 700; margin: 20px 0 6px; line-height: 1.4; color: var(--ink); }
+  .reflect textarea {
+    width: 100%; min-height: 58px; resize: vertical; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+  }
+  .reflect textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(197,5,12,0.15); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 0; }
+
+
+  .foot { margin-top: 44px; padding: 20px 22px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .foot a { color: var(--red); font-weight: 600; }
+  .foot .credit { font-size: 12.5px; line-height: 1.5; margin-top: 12px; }
+  .foot .credit:first-child { margin-top: 0; font-weight: 600; color: #3a3a3a; }
+
+  .print-only { display: none; }
+
+  @media print {
+    @page { margin: 12mm; }
+    body { font-size: 12px; }
+    .wrap { max-width: none; padding: 0; }
+
+    /* force browsers to actually print the red/green fills */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    /* hide interactive chrome */
+    .progress, .nav, .scalekey, .seg, .actions, .hero p.lead, .tabs, .res-jump, .reviewbar,
+    #paneRes .reslead, #paneRes .askbox, .cat-sub { display: none !important; }
+
+    #paneAssess, #paneRes, .results, .foot, .hero { display: block !important; }
+
+    /* ---- category cards: clear, solid, colored, one never split ---- */
+    .cat {
+      display: block !important; page-break-inside: avoid;
+      box-shadow: none !important; border: 1.5px solid #ccc; border-radius: 8px;
+      margin: 0 0 10px; padding: 10px 14px;
+    }
+    .cat.flagged { border: 2px solid var(--red); background: #fdf1f1; }
+    .cat.passing { border: 2px solid var(--ok); background: #f0f7f0; }
+    .cat-head { margin-bottom: 2px; }
+    .cat-head .idx { width: 22px; height: 22px; flex: 0 0 22px; font-size: 12px; }
+    .cat-head .ttl { font-size: 18px; }
+    .cat.flagged .cat-head .ttl { color: var(--red); }
+    .cat.passing .cat-head .ttl { color: var(--ok); }
+    .stmt { padding: 5px 0; }
+    .stmt .q { font-size: 11.5px; margin-bottom: 1px; }
+    .stmt.unrated .q::after { display: none; }
+    .cat-avg { margin-top: 6px; padding-top: 6px; font-size: 11px; }
+    .cat-avg b { font-size: 15px; }
+    .cat-avg.flag b { color: var(--red); }
+    .cat-avg.good b { color: var(--ok); }
+    .print-only { display: block; font-size: 11px; color: #333; }
+
+    /* ---- results: start on a fresh page ---- */
+    .results { page-break-before: always; }
+    .wheel-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; max-width: 460px; margin: 0 auto 14px; }
+    .flagcard { page-break-inside: avoid; box-shadow: none; }
+    .allgood { page-break-inside: avoid; }
+
+    /* ---- reflection: keep together ---- */
+    .reflect { page-break-inside: avoid; border: 1px solid var(--red); background: #fff; border-left: 6px solid var(--red); margin: 0 0 16px; padding: 14px 16px; }
+    #paneRes { margin-top: 8px; }
+    .reflect h3 { font-size: 18px; }
+    .reflect label { font-size: 13px; margin: 10px 0 3px; }
+    .reflect textarea { min-height: 30px; border: 1px solid #bbb; }
+
+    /* Chrome drops clickable link annotations in the PDF when the anchor sits inside
+       an element with overflow:hidden or border-radius clipping. Neutralize both so the
+       resource links stay clickable in the saved PDF. */
+    .card, .resgroup, .reflect, .cat, .flagcard, #paneRes, #paneAssess, .results, .wrap {
+      overflow: visible !important; border-radius: 0 !important;
+    }
+    a[href] { text-decoration: none; }
+
+    /* ---- Extension resources: print only the flagged categories, in clear red boxes ---- */
+    #paneRes .resgroup { page-break-inside: avoid; box-shadow: none; margin: 0 0 10px; padding: 12px 16px; }
+    #paneRes .resgroup:not(.flagged) { display: none !important; }
+    #paneRes .resgroup.flagged { border: 2px solid var(--red); background: #fdf1f1; }
+    #paneRes .resgroup.flagged h3 { color: var(--red); }
+    .reslink { padding: 6px 0; }
+    .reslink .t { font-size: 12.5px; }
+    .reslink .d { font-size: 11px; }
+
+    .foot { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <section class="hero" id="hero">
+    <h1>Farm Tech Ready</h1>
+    <p class="sub">Are you ready to adopt a new technology? Discover where you stand and explore resources that can help you take the next step.</p>
+  </section>
+
+  <div class="tabs" role="tablist" id="tabs">
+    <button class="tab on" id="tabAssessBtn" type="button" role="tab" aria-selected="true" aria-controls="paneAssess">Assessment</button>
+    <button class="tab" id="tabResBtn" type="button" role="tab" aria-selected="false" aria-controls="paneRes">Extension Resources <span class="tabcount" id="tabCount"></span></button>
+  </div>
+
+  <div id="paneAssess" role="tabpanel" aria-labelledby="tabAssessBtn">
+
+  <p class="lead" id="lead">Rate your readiness to adopt new technology on your farm across nine categories, then explore UW-Madison Extension resources for the areas that need work. We do not save or share your results. You can print them at the end of the assessment.</p>
+
+  <div class="startbox" id="startbox">
+    <div class="sb-meta">27 statements &middot; about 10 minutes</div>
+    <button class="btn primary btn-lg" id="startBtn" type="button">Take the assessment</button>
+  </div>
+
+  <div class="progress" id="progress">
+    <div class="prog-top">
+      <span class="step" id="stepLabel">Step 1 of 9</span>
+      <span class="pct" id="pctLabel">0% complete</span>
+    </div>
+    <div class="pbar"><span id="pbarFill"></span></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <div class="scalekey" id="scalekey">
+    <span class="sk-label">Rate:</span>
+    <span><b>1</b> Not at all</span>
+    <span><b>2</b> Minimally</span>
+    <span><b>3</b> Moderately</span>
+    <span><b>4</b> Sufficiently</span>
+    <span><b>5</b> Completely</span>
+  </div>
+
+  <div class="stepHead" id="stepHead" hidden>
+    <span class="sh-num" id="shNum">1</span>
+    <div class="sh-text">
+      <span class="sh-kicker" id="shKicker">Category 1 of 9</span>
+      <h2 class="sh-title" id="shTitle">Business Goals</h2>
+      <p class="sh-sub">Rate all three statements.</p>
+    </div>
+  </div>
+
+  <div class="reviewbar" id="reviewbar" hidden>
+    <div class="rb-text">
+      <strong>Reviewing all your answers</strong>
+      <span>Change any rating and your results update automatically.</span>
+    </div>
+    <button class="btn primary" id="backToResults" type="button">Back to results</button>
+  </div>
+
+  <div id="cats"></div>
+
+  <div class="nav" id="nav">
+    <button class="btn ghost" id="backBtn" type="button">Back</button>
+    <span class="spacer"></span>
+    <button class="btn primary" id="nextBtn" type="button">Next</button>
+  </div>
+
+  <section class="results" id="results">
+    <h2>Your results</h2>
+    <p class="rlead">Any category that averages 3 or lower is flagged as an area that may benefit from further learning, planning, or support.</p>
+
+    <div class="card wheel-card">
+      <h3>Technology Readiness Wheel</h3>
+      <p class="hint">The bold ring marks the score of 3 threshold. Points inside it are flagged.</p>
+      <div class="canvas-holder"><canvas id="wheel" width="600" height="600" role="img" aria-label="Technology Readiness Wheel"></canvas></div>
+      <div class="legend">
+        <span><span class="dot plotted"></span>Your average</span>
+        <span><svg class="legflag" viewBox="0 0 12 14" width="11" height="13" aria-hidden="true"><line x1="1.5" y1="1" x2="1.5" y2="13" stroke="#5a5a5a" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 1 L10 3 Q6 4 1.5 5 Z" fill="#C5050C"/></svg>Flagged (3 or lower)</span>
+        <span><span class="dot thresh"></span>Threshold (3)</span>
+      </div>
+    </div>
+
+    <div id="flagged" style="margin-top:26px;"></div>
+
+    <div class="card reflect">
+      <h3>Reflection questions to help you move forward</h3>
+      <p class="rl">These apply across all of your flagged categories.</p>
+      <label for="rq-stop">What is stopping you from having all the information you need?</label>
+      <textarea id="rq-stop" name="rq-stop" data-rk="stop"></textarea>
+      <label for="rq-help">What resources or people could help you get more information?</label>
+      <textarea id="rq-help" name="rq-help" data-rk="help"></textarea>
+      <label for="rq-first">What are the one or two most important things you should explore first?</label>
+      <textarea id="rq-first" name="rq-first" data-rk="first"></textarea>
+      <label for="rq-who">When will you get the information, and who is responsible?</label>
+      <textarea id="rq-who" name="rq-who" data-rk="who"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" id="reviewBtn" type="button">Review my answers</button>
+      <button class="btn ghost" id="pdfBtn" type="button">Print</button>
+      <button class="btn ghost" id="resBtn" type="button">Extension resources</button>
+      <button class="btn ghost" id="resetBtn" type="button">Start over</button>
+    </div>
+  </section>
+
+  </div><!-- /paneAssess -->
+
+  <div id="paneRes" role="tabpanel" aria-labelledby="tabResBtn" hidden>
+    <p class="reslead">Research-based resources from UW&ndash;Madison Extension to help you address each category. Once you finish the assessment, your flagged categories move to the top of this list. You may want to start by reading the companion article to this worksheet: <a href="https://farms.extension.wisc.edu/articles/adopting-new-technology-start-with-the-right-questions/" target="_blank" rel="noopener">Adopting New Technology: Start with the Right Questions</a>. It is a good place to begin.</p>
+    <div id="resList"></div>
+    <div class="card askbox">
+      <h3>Still have questions?</h3>
+      <p class="asklinks">
+        <a href="https://extension.wisc.edu/agriculture/ask-an-agriculture-question/" target="_blank" rel="noopener">Ask an agriculture question</a>
+        <a href="https://counties.extension.wisc.edu/" target="_blank" rel="noopener">Find your county Extension office</a>
+      </p>
+    </div>
+  </div><!-- /paneRes -->
+
+  <div class="foot" id="foot">
+    <div class="credit">Developed by the Investment in Tech and Automation Workgroup (Kevin Bernhardt, Stephanie Plaster, Carolina Pinz&oacute;n, Katelyn Goldsmith, John Shutske, Angie Ulness, Jackie McCarville, Leonard Polzin, Kelly Wilfert, Nesli Akdeniz) with the UW&ndash;Madison Division of Extension.</div>
+    <div class="credit">This application was developed with the assistance of an AI tool, which was used to write the underlying code (HTML, CSS, and JavaScript). The content is not AI-generated: the nine readiness categories, the 27 statements, the 1-to-5 rating scale, the threshold of 3, and the guiding questions all come from the Ag Technology Readiness worksheet, and the linked resources are published Extension materials. The authors reviewed and tested the tool for accuracy.</div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* ---------- Data ---------- */
+const CATEGORIES = [
+  {
+    key: "goals", label: "Business Goals",
+    statements: [
+      "I have written business and family goals that support my long-term strategy.",
+      "I identified the main reason for adopting this technology and the key bottlenecks it addresses.",
+      "I considered its lifespan, future updates, and potential obsolescence."
+    ],
+    questions: [
+      "What are your business and family goals, and how does this technology fit your long-term strategy?",
+      "What is the primary purpose for making this change?",
+      "What tasks or bottlenecks could this technology improve?",
+      "What is the technology's lifespan, and what is the plan for updates and obsolescence?"
+    ]
+  },
+  {
+    key: "cost", label: "Cost-Benefit",
+    statements: [
+      "I understand how this technology will affect production and operating costs.",
+      "I calculated total costs, including setup and maintenance, with a cushion for unexpected costs.",
+      "I estimated return on investment and how it changes with productivity or cost savings."
+    ],
+    questions: [
+      "What does it cost to buy, set up, and maintain the equipment and infrastructure?",
+      "How will operating costs change (feed, labor, repair, veterinary, utilities, insurance)?",
+      "What is the useful life before replacement?",
+      "How quickly do you expect a return on investment, and how does ROI change with productivity and cost savings?",
+      "What strategies will you use to manage surprise costs?"
+    ]
+  },
+  {
+    key: "infra", label: "Infrastructure",
+    statements: [
+      "I assessed compatibility with current infrastructure and any upgrades needed.",
+      "I understand changes in resource needs like water, energy, and supplies.",
+      "I have a backup plan for hardware failures or data security issues."
+    ],
+    questions: [
+      "Is the technology compatible with your current infrastructure, or will you need changes?",
+      "How will input needs (chemicals, feed, seed, sand) change?",
+      "What is the impact on ventilation, plumbing, electrical, water, and manure systems?",
+      "How much energy does it use, and how will your energy needs change?",
+      "What backups should be in place for hardware failures or data breaches?"
+    ]
+  },
+  {
+    key: "connect", label: "Connectivity",
+    statements: [
+      "I confirmed how the technology works with my internet connection and during occasional outages.",
+      "I am comfortable with frequent notifications, and with managing data use and security.",
+      "I know how it fits with my current systems and whether new hardware or software is needed."
+    ],
+    questions: [
+      "Does your internet service meet the technology's requirements, and how does it perform with unstable connectivity?",
+      "How do you feel about being constantly connected through notifications and alarms?",
+      "How does it handle and secure sensitive farm data, and prevent unauthorized access?",
+      "Does it work with your existing farm management systems and software?",
+      "Will you need new software or subscriptions, or help managing the data?"
+    ]
+  },
+  {
+    key: "labor", label: "Labor and Training",
+    statements: [
+      "I am aware of necessary safety measures and staff training needs.",
+      "I understand the impact on payroll and labor savings.",
+      "I identified the team member or members who will lead acquisition, adoption, and troubleshooting."
+    ],
+    questions: [
+      "How easy is it for people to learn, regardless of technical skill?",
+      "How much training will staff need to use and maintain the equipment, and what safety training is required?",
+      "How will the changes affect total payroll costs, and how much time and labor will it save?",
+      "Are there user groups you can join?",
+      "Do you and your staff have the capacity to solve problems?"
+    ]
+  },
+  {
+    key: "support", label: "Support",
+    statements: [
+      "I researched the supplier's reputation and user experiences.",
+      "I understand service needs, downtime impacts, and contract terms.",
+      "I know the reliability and timeliness of available support for technical issues."
+    ],
+    questions: [
+      "How well known and trusted is the supplier, and have you checked reviews or testimonials?",
+      "What extra agreements or subscriptions are required?",
+      "What maintenance and support services does the manufacturer offer, and how often is maintenance needed?",
+      "How long does maintenance take, and how will it affect daily operations?",
+      "How likely is reliable, timely support for technical issues?"
+    ]
+  },
+  {
+    key: "adapt", label: "Adaptability",
+    statements: [
+      "I understand short-term transition disruptions and how long they will last.",
+      "I considered its adaptability to changes in farm size or systems.",
+      "I evaluated how the technology performs in different weather conditions."
+    ],
+    questions: [
+      "What are the short-term effects of switching, and how long will they last?",
+      "Can the technology grow with your operation and adapt if your business size or structure changes?",
+      "How well does it adjust to changes in crop patterns or livestock management?",
+      "How does it perform in different and extreme weather?",
+      "What are the backup plans if weather or other factors affect performance?"
+    ]
+  },
+  {
+    key: "stake", label: "Stakeholder Management",
+    statements: [
+      "I gathered feedback from employees, peers, advisors, and regulators.",
+      "I understand environmental, regulatory, and insurance coverage impacts.",
+      "I know whether the supplier's contracts affect my data use and rights."
+    ],
+    questions: [
+      "What is your strategy for communicating changes and gathering feedback from employees and stakeholders?",
+      "What is the environmental impact, and does it match your sustainability goals?",
+      "What are other farmers, consultants, associations, and university programs saying?",
+      "Does implementation comply with state and federal laws, and how will it impact licenses or certifications?",
+      "If there is a contract, are both parties' obligations clear, and how does the fine print affect your data rights?",
+      "How will it impact your insurance coverage, types, levels, and premiums?"
+    ]
+  },
+  {
+    key: "prod", label: "Production",
+    statements: [
+      "I evaluated the changes in management practices needed.",
+      "I have a plan for updating protocols, processes, and operating procedures.",
+      "I understand the changes in yield, inputs, and outputs across the system."
+    ],
+    questions: [
+      "How will you need to change your management practices?",
+      "How will you update protocols and operating procedures, and who will do it?",
+      "What changes are expected in yield, inputs, and outputs?"
+    ]
+  }
+];
+
+const SCALE = ["Not at all", "Minimally", "Moderately", "Sufficiently", "Completely"];
+
+/* ---------- UW-Madison Extension resources (verified links) ---------- */
+const AUTOMATION_HUB = { t: "Agriculture Automation: Embracing Technology in Farming", u: "https://farms.extension.wisc.edu/technology/", d: "Extension's hub of real-farm examples, articles, and tools on ag automation." };
+const STRATEGY = { t: "Setting Your Technology Investment Strategy", u: "https://farms.extension.wisc.edu/articles/setting-your-technology-investment-strategy/", d: "Weighing the opportunities against the risks and large costs." };
+const BALANCING = { t: "Balancing Technology and People: The Evolving Role of Farm Workers", u: "https://farms.extension.wisc.edu/articles/balancing-technology-and-people-the-evolving-role-of-farm-workers-in-automation/", d: "What changes for you, family members, and hired employees." };
+const WIEGEL = { t: "Farm story: Wiegel Riverside Dairy", u: "https://farms.extension.wisc.edu/files/2025/01/WIEGEL-Farm-Story-web.pdf", d: "Why they installed robots, results, lessons learned, and advice.", pdf: true };
+const JENLAR = { t: "Farm story: Jenlar Holsteins and Brown Swiss", u: "https://farms.extension.wisc.edu/files/2025/01/JENLAR-Farm-Story-web.pdf", d: "A second producer's experience with robotic milking.", pdf: true };
+const AMS_GLOSSARY = { t: "Automatic Milking Systems Glossary", u: "https://dairy.extension.wisc.edu/automatic-milking-systems-ams-glossary/", d: "Understand key AMS terms and concepts." };
+const DAIRY_EMERGING = { t: "Emerging Technologies and Facilities for Dairy Operations", u: "https://dairy.extension.wisc.edu/article-topic/emerging-technologies-and-facilities/", d: "Resources for upgrading barns, parlors, and equipment." };
+
+const RESOURCES = {
+  goals: [
+    { t: "Setting Business Strategy Using a SWOT Analysis", u: "https://farms.extension.wisc.edu/articles/setting-business-strategy-using-a-swot-analysis/", d: "Strategic assessment of strengths, weaknesses, opportunities, and threats." },
+    STRATEGY,
+    { t: "Navigating Your Ag Business: From Stress to Success", u: "https://farms.extension.wisc.edu/programs/navigating-your-ag-business/", d: "An online strategic planning course." },
+    { t: "Business Development, Transition and Succession Resources", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Tie the decision to your long-term business and family strategy." }
+  ],
+  cost: [
+    { t: "Before You Buy: A Farm Tech Investment Planning Guide", u: "https://farms.extension.wisc.edu/articles/before-you-buy-a-farm-tech-investment-planning-guide/", d: "Build the plan before the purchase: costs, payback, and pitfalls." },
+    { t: "Making the Switch to Robots: AMS Transition Budgeter", u: "https://dairy.extension.wisc.edu/articles/making-the-switch-to-robots-a-new-budgeting-tool-for-transitioning-to-automatic-milking-systems/", d: "A web-based tool to model the long-term finances of going robotic." },
+    STRATEGY,
+    { t: "Financial Analysis: Cost of Production and Sensitivity Analysis", u: "https://youtu.be/4CY-Demoo1E?si=szYOwSjTAWczZUN9", d: "Analyze profitability impacts of technology adoption." },
+    { t: "Financial Management", u: "https://farms.extension.wisc.edu/article-topic/financial-strategic-management/", d: "Budgeting, ROI, and financial decision-making resources." }
+  ],
+  infra: [
+    DAIRY_EMERGING,
+    { t: "Automated Milking Systems Facility Design Considerations", u: "https://dairy.extension.wisc.edu/articles/automated-milking-systems-facility-design-considerations/", d: "Assess facility modifications required." },
+    { t: "The Dairyland Initiative Facility Designs", u: "https://thedairylandinitiative.vetmed.wisc.edu/", d: "Facility designs for many facets of a dairy operation including AMS and automated feed centers." },
+    { t: "12 Things You Can Do When Moving Toward Higher Levels of Ag Tech", u: "https://ipcm.wisc.edu/blog/2023/02/12-things-you-can-do-when-moving-toward-higher-levels-of-ag-tech/", d: "Explore steps you can do today." }
+  ],
+  connect: [
+    { t: "Broadband: access, adoption, and infrastructure", u: "https://economicdevelopment.extension.wisc.edu/topics/broadband/", d: "Extension's broadband program, including rural access and connectivity resources." },
+    { t: "Large Language Models: A Powerful New Tool for Wisconsin Agriculture", u: "https://farms.extension.wisc.edu/articles/large-language-models-a-powerful-new-tool-for-wisconsin-agriculture/", d: "How connected AI tools are reshaping agricultural work." },
+    { t: "Using AMS Data to Improve Herd Health", u: "https://youtu.be/5beSunxn-5c?si=CJ7guynMu2sPdmnH", d: "A farm shares insights into how they use their AMS data." },
+    { t: "Data Ownership and Privacy in Dairy Farming", u: "https://doi.org/10.3390/ani15040524", d: "A journal article exploring data ownership and privacy." },
+    { t: "AI in Agriculture", u: "https://cropsandsoils.extension.wisc.edu/articles/ai-in-agriculture/", d: "How AI tools are used for crop production, decision support, and problem-solving." }
+  ],
+  labor: [
+    BALANCING,
+    { t: "Becoming the Employer of Choice", u: "https://farms.extension.wisc.edu/programs/becoming-the-employer-of-choice/", d: "Extension program on hiring, managing, and keeping good people." },
+    { t: "Human Resources", u: "https://farms.extension.wisc.edu/article-topic/human-resources/", d: "Payroll, training, and workforce planning resources." },
+    { t: "Safety and Health", u: "https://farms.extension.wisc.edu/topics/safety-health/", d: "Safety training and hazard resources for new equipment." },
+    AMS_GLOSSARY
+  ],
+  support: [
+    { t: "Udderly Essential AMS Maintenance Tips", u: "https://dairy.extension.wisc.edu/articles/udderly-essential-ams-maintenance-tips/", d: "Maintenance tasks to support the smooth operation of AMS." },
+    WIEGEL, JENLAR, AUTOMATION_HUB, AMS_GLOSSARY
+  ],
+  adapt: [
+    { t: "Capacity and Breakeven Analysis", u: "https://farms.extension.wisc.edu/articles/is-my-farm-operation-big-enough/", d: "Calculate capacity needed to achieve profit goals." },
+    BALANCING, WIEGEL, AUTOMATION_HUB
+  ],
+  stake: [
+    { t: "Ag Land Pricing and Contracts", u: "https://farms.extension.wisc.edu/article-topic/pricing-and-contracts/", d: "Contract terms and the fine print, including your data rights." },
+    { t: "Farm Succession Resources", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Family, ownership, and stakeholder communication." },
+    { t: "Policy, Markets and Marketing", u: "https://farms.extension.wisc.edu/topics/policy-markets-marketing/", d: "Regulatory and market context for your decision." },
+    AMS_GLOSSARY
+  ],
+  prod: [
+    DAIRY_EMERGING,
+    { t: "Dairy Farm Management Decision Support Tools", u: "https://dairymgt.info/", d: "Scientifically-based tools to help you evaluate options." },
+    { t: "Crops and Soils Extension", u: "https://cropsandsoils.extension.wisc.edu/", d: "Field-side infrastructure, equipment, and agronomy resources." },
+    { t: "Livestock Extension", u: "https://livestock.extension.wisc.edu/", d: "Facilities and systems resources for livestock operations." }
+  ]
+};
+
+const RES_WHY = {
+  goals: "Clarify why you are adopting, and how it fits your long-term strategy.",
+  cost: "Pin down total cost, payback, and how ROI shifts with productivity.",
+  infra: "Check compatibility, resource needs, and backup plans.",
+  connect: "Confirm your internet service, data handling, and system fit.",
+  labor: "Plan training, safety, payroll impacts, and who leads the rollout.",
+  support: "Vet the supplier, service terms, and what other farmers experienced.",
+  adapt: "Think through disruption, growth, and weather performance.",
+  stake: "Cover feedback, regulations, insurance, and contract and data rights.",
+  prod: "Plan the changes to practices, protocols, yield, inputs, and outputs."
+};
+const RED = "#C5050C";
+const TOTAL_STATEMENTS = CATEGORIES.length * 3; // 27
+const RESULTS_STEP = CATEGORIES.length;         // 9
+
+const scores = CATEGORIES.map(() => [null, null, null]);
+const NOT_STARTED = -1;
+let step = NOT_STARTED;
+let reviewMode = false;
+
+/* ---------- Build cards ---------- */
+const catsEl = document.getElementById("cats");
+CATEGORIES.forEach((cat, ci) => {
+  const card = document.createElement("div");
+  card.className = "card cat";
+  card.id = "cat-" + cat.key;
+
+  const head = document.createElement("div");
+  head.className = "cat-head";
+  head.innerHTML = '<span class="idx">' + (ci + 1) + '</span><span class="ttl">' + cat.label + '</span>';
+  card.appendChild(head);
+
+  const sub = document.createElement("p");
+  sub.className = "cat-sub";
+  sub.textContent = "Rate all three statements.";
+  card.appendChild(sub);
+
+  cat.statements.forEach((text, si) => {
+    const stmt = document.createElement("div");
+    stmt.className = "stmt unrated";
+    stmt.id = "stmt-" + cat.key + "-" + si;
+
+    const q = document.createElement("div");
+    q.className = "q";
+    q.id = "q-" + cat.key + "-" + si;
+    q.textContent = text;
+    stmt.appendChild(q);
+
+    const seg = document.createElement("div");
+    seg.className = "seg";
+    seg.setAttribute("role", "radiogroup");
+    seg.setAttribute("aria-labelledby", q.id);
+    for (let v = 1; v <= 5; v++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.innerHTML = v + "<small>" + SCALE[v - 1] + "</small>";
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", "false");
+      b.setAttribute("aria-label", v + " " + SCALE[v - 1] + ", " + text);
+      b.addEventListener("click", () => {
+        scores[ci][si] = (scores[ci][si] === v) ? null : v;
+        renderSegState(seg, scores[ci][si]);
+        stmt.classList.toggle("unrated", scores[ci][si] === null);
+        updateStmtPrint(stmt, scores[ci][si]);
+        refresh();
+      });
+      seg.appendChild(b);
+    }
+    stmt.appendChild(seg);
+
+    const pr = document.createElement("div");
+    pr.className = "print-only";
+    pr.textContent = "Not rated";
+    stmt.appendChild(pr);
+
+    card.appendChild(stmt);
+  });
+
+  const avg = document.createElement("div");
+  avg.className = "cat-avg";
+  avg.id = "avg-" + cat.key;
+  avg.innerHTML = '<span class="note">Category average</span><b>&ndash;</b>';
+  card.appendChild(avg);
+
+  catsEl.appendChild(card);
+});
+
+function renderSegState(seg, val) {
+  Array.from(seg.children).forEach((btn, i) => {
+    const on = (i + 1) === val;
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-checked", on ? "true" : "false");
+  });
+}
+function updateStmtPrint(stmt, val) {
+  stmt.querySelector(".print-only").textContent =
+    val ? ("Rated: " + val + " (" + SCALE[val - 1] + ")") : "Not rated";
+}
+
+/* ---------- Progress dots ---------- */
+const dotsEl = document.getElementById("dots");
+CATEGORIES.forEach(() => dotsEl.appendChild(document.createElement("i")));
+
+/* The results footer belongs with the results only */
+function updateFoot() {
+  const resultsVisible = document.getElementById("results").classList.contains("active");
+  document.getElementById("foot").style.display = (resultsVisible && paneRes.hidden) ? "block" : "none";
+}
+
+/* ---------- Tabs ---------- */
+const paneAssess = document.getElementById("paneAssess");
+const paneRes = document.getElementById("paneRes");
+const tabAssessBtn = document.getElementById("tabAssessBtn");
+const tabResBtn = document.getElementById("tabResBtn");
+
+function showTab(which) {
+  const res = which === "res";
+  paneRes.hidden = !res;
+  paneAssess.hidden = res;
+  tabResBtn.classList.toggle("on", res);
+  tabAssessBtn.classList.toggle("on", !res);
+  tabResBtn.setAttribute("aria-selected", res ? "true" : "false");
+  tabAssessBtn.setAttribute("aria-selected", res ? "false" : "true");
+  if (res) renderResources();
+  else if (step >= RESULTS_STEP && !reviewMode) drawWheel();
+  updateFoot();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+tabAssessBtn.addEventListener("click", () => showTab("assess"));
+tabResBtn.addEventListener("click", () => showTab("res"));
+
+function renderResources() {
+  const host = document.getElementById("resList");
+  host.innerHTML = "";
+
+  // flagged categories first, each keeping its original number
+  const order = CATEGORIES.map((cat, ci) => ({ cat, ci, flagged: isFlagged(ci), avg: catAverage(ci) }));
+  order.sort((a, b) => (b.flagged - a.flagged) || (a.ci - b.ci));
+
+  order.forEach(({ cat, ci, flagged, avg }) => {
+    const g = document.createElement("div");
+    const passing = isComplete(ci) && avg !== null && avg > 3;
+    g.className = "card resgroup" + (flagged ? " flagged" : passing ? " passing" : "");
+    let h = "<h3>" + cat.label;
+    if (flagged) h += ' <span class="fl">Needs attention</span>';
+    if (passing) h += ' <span class="fl ok">Meets expectations</span>';
+    if (avg !== null && isComplete(ci)) h += ' <span class="sc">Your average ' + avg.toFixed(1) + "</span>";
+    h += "</h3>";
+    h += '<p class="why">' + RES_WHY[cat.key] + "</p>";
+    (RESOURCES[cat.key] || []).forEach(r => {
+      h += '<a class="reslink" href="' + r.u + '" target="_blank" rel="noopener">' +
+           '<span class="t">' + r.t + (r.pdf ? '<span class="pdf">PDF</span>' : "") +
+             "</span>" +
+           '<span class="d">' + r.d + "</span></a>";
+    });
+    g.innerHTML = h;
+    host.appendChild(g);
+  });
+
+  // flag count badge on the tab
+  const n = CATEGORIES.filter((c, i) => isFlagged(i)).length;
+  const badge = document.getElementById("tabCount");
+  badge.textContent = n;
+  badge.classList.toggle("show", n > 0);
+}
+
+/* ---------- Compute ---------- */
+function catAverage(ci) {
+  const vals = scores[ci].filter(v => v !== null);
+  if (vals.length === 0) return null;
+  return vals.reduce((a, b) => a + b, 0) / vals.length;
+}
+function isComplete(ci) { return scores[ci].every(v => v !== null); }
+function isFlagged(ci) { const a = catAverage(ci); return isComplete(ci) && a <= 3; }
+function ratedCount() {
+  let n = 0;
+  scores.forEach(row => row.forEach(v => { if (v !== null) n++; }));
+  return n;
+}
+function allComplete() { return CATEGORIES.every((c, i) => isComplete(i)); }
+
+function updateFlagBadge() {
+  const n = CATEGORIES.filter((c, i) => isFlagged(i)).length;
+  const badge = document.getElementById("tabCount");
+  badge.textContent = n;
+  badge.classList.toggle("show", n > 0);
+}
+
+/* ---------- Render ---------- */
+function refresh() {
+  updateFlagBadge();
+  // per-card average readout
+  CATEGORIES.forEach((cat, ci) => {
+    const avg = catAverage(ci);
+    const el = document.getElementById("avg-" + cat.key);
+    const done = isComplete(ci);
+    el.className = "cat-avg" + (done ? (avg <= 3 ? " flag" : " good") : "");
+    const note = done
+      ? (avg <= 3 ? "Category average (needs attention)" : "Category average (meets expectations)")
+      : "Category average (rate all three)";
+    el.innerHTML = '<span class="note">' + note + "</span><b>" + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</b>";
+    const card = document.getElementById("cat-" + cat.key);
+    card.classList.toggle("flagged", reviewMode && done && avg <= 3);
+    card.classList.toggle("passing", reviewMode && done && avg > 3);
+  });
+
+  // progress
+  const rated = ratedCount();
+  const pct = Math.round((rated / TOTAL_STATEMENTS) * 100);
+  document.getElementById("pbarFill").style.width = pct + "%";
+  document.getElementById("pctLabel").textContent = pct + "% complete";
+  document.getElementById("stepLabel").textContent =
+    (step === NOT_STARTED || step >= RESULTS_STEP)
+      ? "Progress"
+      : "Step " + (step + 1) + " of " + CATEGORIES.length;
+
+  Array.from(dotsEl.children).forEach((d, i) => {
+    d.className = isComplete(i) ? "done" : (i === step ? "now" : "");
+  });
+
+  // nav state
+  const nextBtn = document.getElementById("nextBtn");
+  const backBtn = document.getElementById("backBtn");
+  if (step > NOT_STARTED && step < RESULTS_STEP) {
+    const done = isComplete(step);
+    nextBtn.disabled = !done;
+    nextBtn.textContent = (step === RESULTS_STEP - 1) ? "See my results" : "Next";
+    backBtn.disabled = step === 0;
+  }
+}
+
+function showStep(n) {
+  reviewMode = false;
+  const rb = document.getElementById("reviewbar");
+  rb.hidden = true; rb.style.display = "none";
+  document.getElementById("cats").classList.remove("reviewing");
+  step = n;
+  const notStarted = step === NOT_STARTED;
+  const onResults = step >= RESULTS_STEP;
+  const onQuestions = !notStarted && !onResults;
+
+  document.querySelectorAll(".cat").forEach((c, i) => c.classList.toggle("active", onQuestions && i === step));
+  document.getElementById("results").classList.toggle("active", onResults);
+  document.getElementById("nav").style.display = onQuestions ? "flex" : "none";
+  document.getElementById("scalekey").style.display = onQuestions ? "flex" : "none";
+  document.getElementById("progress").style.display = onQuestions ? "block" : "none";
+  document.getElementById("lead").style.display = notStarted ? "block" : "none";
+  document.getElementById("startbox").hidden = !notStarted;
+
+  document.getElementById("hero").style.display = onQuestions ? "none" : "block";
+  document.getElementById("tabs").style.display = onQuestions ? "none" : "flex";
+
+  const sh = document.getElementById("stepHead");
+  sh.hidden = !onQuestions;
+  if (onQuestions) {
+    document.getElementById("shNum").textContent = step + 1;
+    document.getElementById("shKicker").textContent = "Category " + (step + 1) + " of " + CATEGORIES.length;
+    document.getElementById("shTitle").textContent = CATEGORIES[step].label;
+  }
+
+  if (onResults) { renderResults(); drawWheel(); }
+  refresh();
+  updateFoot();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* Review: all categories at once, with one way back to the results */
+function showReview() {
+  reviewMode = true;
+  document.querySelectorAll(".cat").forEach(c => c.classList.add("active"));
+  document.getElementById("cats").classList.add("reviewing");
+  document.getElementById("results").classList.remove("active");
+  document.getElementById("nav").style.display = "none";
+  document.getElementById("progress").style.display = "none";
+  document.getElementById("lead").style.display = "none";
+  document.getElementById("scalekey").style.display = "flex";
+  const rb2 = document.getElementById("reviewbar");
+  rb2.hidden = false; rb2.style.display = "flex";
+  document.getElementById("stepHead").hidden = true;
+  document.getElementById("startbox").hidden = true;
+  document.getElementById("hero").style.display = "block";
+  document.getElementById("tabs").style.display = "flex";
+  refresh();
+  updateFoot();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  if (step < RESULTS_STEP && !isComplete(step)) return; // gate
+  showStep(step + 1);
+});
+document.getElementById("backBtn").addEventListener("click", () => {
+  if (step > 0) showStep(step - 1);
+});
+document.getElementById("startBtn").addEventListener("click", () => showStep(0));
+document.getElementById("reviewBtn").addEventListener("click", () => showReview());
+document.getElementById("resBtn").addEventListener("click", () => showTab("res"));
+document.getElementById("backToResults").addEventListener("click", () => showStep(RESULTS_STEP));
+function preparePrint() {
+  renderResults();
+  renderResources();
+  drawWheel();
+  // Chrome only creates clickable PDF link annotations for content that was genuinely
+  // laid out and painted, not for content flipped from display:none via print media.
+  document.body.classList.add("printing");
+  paneAssess.hidden = false;
+  paneRes.hidden = false;
+  // Chrome skips link annotations for target="_blank" anchors when printing, so make
+  // every link a plain same-tab anchor for the print, then restore afterward.
+  document.querySelectorAll('a[target="_blank"]').forEach(a => {
+    a.dataset.printTarget = "1";
+    a.removeAttribute("target");
+    a.removeAttribute("rel");
+  });
+}
+function restoreAfterPrint() {
+  document.body.classList.remove("printing");
+  const onRes = tabResBtn.classList.contains("on");
+  paneRes.hidden = !onRes;
+  paneAssess.hidden = onRes;
+  document.querySelectorAll('a[data-print-target]').forEach(a => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener");
+    delete a.dataset.printTarget;
+  });
+}
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (!confirm("Clear all scores and reflection notes and start over?")) return;
+  scores.forEach(row => row.fill(null));
+  document.querySelectorAll(".seg").forEach(seg => renderSegState(seg, null));
+  document.querySelectorAll(".stmt").forEach(s => { s.classList.add("unrated"); updateStmtPrint(s, null); });
+  document.querySelectorAll(".reflect textarea").forEach(t => t.value = "");
+  showStep(NOT_STARTED);
+});
+
+/* ---------- Results ---------- */
+function renderResults() {
+  // flagged detail
+  const host = document.getElementById("flagged");
+  host.innerHTML = "";
+  const flags = [];
+  CATEGORIES.forEach((cat, ci) => { if (isFlagged(ci)) flags.push({ cat, avg: catAverage(ci) }); });
+
+  if (flags.length === 0) {
+    const div = document.createElement("div");
+    div.className = "allgood";
+    div.innerHTML = "<b>No categories are flagged.</b><br>Every category scored above the attention threshold of 3. Use the reflection questions below to plan your next steps.";
+    host.appendChild(div);
+    return;
+  }
+
+  const intro = document.createElement("p");
+  intro.style.cssText = "font-weight:700;margin:0 0 12px;";
+  intro.textContent = flags.length === 1
+    ? "1 category needs attention. Work through its guiding questions:"
+    : flags.length + " categories need attention. Work through their guiding questions:";
+  host.appendChild(intro);
+
+  flags.forEach(({ cat, avg }) => {
+    const fc = document.createElement("div");
+    fc.className = "flagcard";
+    let ul = "<ul>";
+    cat.questions.forEach(q => { ul += "<li>" + q + "</li>"; });
+    ul += "</ul>";
+    fc.innerHTML =
+      "<h3>" + cat.label + '<span class="sc">Average ' + avg.toFixed(1) + "</span></h3>" +
+      '<div class="glabel">Guiding questions to work through:</div>' + ul;
+    const jump = document.createElement("button");
+    jump.type = "button";
+    jump.className = "res-jump";
+    jump.textContent = "See Extension resources for " + cat.label;
+    jump.addEventListener("click", () => showTab("res"));
+    fc.appendChild(jump);
+    host.appendChild(fc);
+  });
+}
+
+/* ---------- Wheel ---------- */
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+
+function drawFlag(ctx, x, baseY) {
+  const h = 13, w = 9, poleX = x - 3, topY = baseY - h;
+  ctx.strokeStyle = "#5a5a5a"; ctx.lineWidth = 1.4; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(poleX, topY); ctx.lineTo(poleX, baseY); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(poleX, topY);
+  ctx.lineTo(poleX + w, topY + h * 0.28);
+  ctx.quadraticCurveTo(poleX + w * 0.5, topY + h * 0.36, poleX, topY + h * 0.5);
+  ctx.closePath();
+  ctx.fillStyle = RED; ctx.fill();
+}
+
+const WHEEL_LABELS = [
+  ["Business Goals"], ["Cost-Benefit"], ["Infra-", "structure"], ["Connectivity"],
+  ["Labor &", "Training"], ["Support"], ["Adaptability"], ["Stakeholder", "Mgmt"], ["Production"]
+];
+
+function describeWheel() {
+  const parts = CATEGORIES.map((cat, i) => {
+    const a = catAverage(i);
+    if (a === null) return cat.label + " not rated";
+    return cat.label + " " + a.toFixed(1) + (isFlagged(i) ? ", flagged" : "");
+  });
+  const n = CATEGORIES.filter((c, i) => isFlagged(i)).length;
+  const lead = n === 0
+    ? "Technology Readiness Wheel. No categories flagged. "
+    : "Technology Readiness Wheel. " + n + (n === 1 ? " category" : " categories") + " flagged at 3 or lower. ";
+  canvas.setAttribute("aria-label", lead + "Averages out of 5: " + parts.join("; ") + ".");
+}
+
+function drawWheel() {
+  const holder = canvas.parentElement;
+  const size = Math.max(300, Math.round(holder.clientWidth || 520));
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(size * dpr);
+  canvas.height = Math.round(size * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, size, size);
+
+  const cx = size / 2, cy = size / 2;
+  const R = size / 2 - Math.max(74, size * 0.205);
+  const n = CATEGORIES.length;
+  const step2 = (Math.PI * 2) / n;
+  const start = -Math.PI / 2;
+
+  ctx.beginPath();
+  for (let i = 0; i <= n; i++) {
+    const a = start + i * step2;
+    const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = "#fbfbfa"; ctx.fill();
+
+  for (let i = 0; i < n; i++) {
+    const a = start + i * step2;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+    ctx.strokeStyle = "#e6e4e0"; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  for (let v = 1; v <= 5; v++) {
+    const rr = (v / 5) * R;
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const a = start + i * step2;
+      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    if (v === 3) { ctx.strokeStyle = "#1a1a1a"; ctx.lineWidth = 2.4; }
+    else if (v === 5) { ctx.strokeStyle = "#cfcdc9"; ctx.lineWidth = 1.4; }
+    else { ctx.strokeStyle = "#e6e4e0"; ctx.lineWidth = 1; }
+    ctx.stroke();
+  }
+
+  ctx.textAlign = "right"; ctx.textBaseline = "middle";
+  ctx.font = "11px 'Red Hat Text', sans-serif";
+  for (let v = 1; v <= 5; v++) {
+    const rr = (v / 5) * R;
+    ctx.fillStyle = v === 3 ? "#1a1a1a" : "#bdbbb7";
+    ctx.fillText(String(v), cx - 5, cy - rr);
+  }
+
+  const NEUTRAL = "#8a8a8a";
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const avg = catAverage(i);
+    if (avg === null) { pts.push(null); continue; }
+    const a = start + i * step2, rr = (avg / 5) * R;
+    pts.push({ x: cx + rr * Math.cos(a), y: cy + rr * Math.sin(a), avg, flagged: isFlagged(i) });
+  }
+  const known = pts.filter(p => p !== null);
+  if (known.length >= 2) {
+    const allKnown = pts.every(p => p !== null);
+    ctx.beginPath();
+    if (allKnown) {
+      pts.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+      ctx.closePath();
+      ctx.fillStyle = "rgba(120,120,120,0.10)"; ctx.fill();
+      ctx.strokeStyle = NEUTRAL; ctx.lineWidth = 2; ctx.stroke();
+    } else {
+      let started = false;
+      for (let i = 0; i < n; i++) {
+        const p = pts[i];
+        if (p) { if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y); }
+        else started = false;
+      }
+      ctx.strokeStyle = NEUTRAL; ctx.lineWidth = 2; ctx.stroke();
+    }
+  }
+  known.forEach(p => {
+    if (p.flagged) {
+      ctx.beginPath(); ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(197,5,12,0.22)"; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(197,5,12,0.5)"; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.flagged ? 6.5 : 4, 0, Math.PI * 2);
+    ctx.fillStyle = p.flagged ? RED : NEUTRAL; ctx.fill();
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = p.flagged ? 2 : 1.5; ctx.stroke();
+  });
+
+  describeWheel();
+
+  for (let i = 0; i < n; i++) {
+    const a = start + i * step2, cos = Math.cos(a), sin = Math.sin(a);
+    const lx = cx + (R + 14) * cos, ly = cy + (R + 14) * sin;
+    const avg = catAverage(i), flagged = isFlagged(i);
+
+    if (Math.abs(cos) < 0.30) ctx.textAlign = "center";
+    else if (cos > 0) ctx.textAlign = "left";
+    else ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+
+    const lines = WHEEL_LABELS[i], lineH = 14;
+    const blockH = lines.length * lineH + (avg !== null ? 16 : 15);
+    let topY = ly - blockH / 2 + lineH / 2;
+    if (sin < -0.7) topY -= 4;
+    if (sin > 0.7) topY += 4;
+
+    ctx.font = "700 12.5px 'Red Hat Text', sans-serif";
+    if (flagged) {
+      let maxW = 0;
+      lines.forEach(ln => { const w = ctx.measureText(ln).width; if (w > maxW) maxW = w; });
+      const centerX = ctx.textAlign === "left" ? lx + maxW / 2 : ctx.textAlign === "right" ? lx - maxW / 2 : lx;
+      drawFlag(ctx, centerX, topY - 9);
+    }
+    ctx.fillStyle = flagged ? RED : "#2a2a2a";
+    lines.forEach((ln, k) => ctx.fillText(ln, lx, topY + k * lineH));
+
+    ctx.font = "800 13px 'Red Hat Text', sans-serif";
+    if (avg === null) { ctx.fillStyle = "#c4c4c4"; ctx.fillText("\u2013", lx, topY + lines.length * lineH + 2); }
+    else { ctx.fillStyle = flagged ? RED : "#7a7a7a"; ctx.fillText(avg.toFixed(1), lx, topY + lines.length * lineH + 2); }
+  }
+}
+
+if (typeof ResizeObserver !== "undefined") {
+  new ResizeObserver(() => { if (step >= RESULTS_STEP) drawWheel(); }).observe(canvas.parentElement);
+} else {
+  let rz;
+  window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(drawWheel, 120); });
+}
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => { if (step >= RESULTS_STEP) drawWheel(); });
+}
+window.addEventListener("beforeprint", preparePrint);
+window.addEventListener("afterprint", restoreAfterPrint);
+/* Safari and some browsers do not fire beforeprint/afterprint reliably; matchMedia covers them */
+if (window.matchMedia) {
+  const mq = window.matchMedia("print");
+  mq.addListener(m => { if (m.matches) preparePrint(); else restoreAfterPrint(); });
+}
+
+/* ---------- PDF report with clickable links ---------- */
+function buildPdf() {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert("The PDF library could not load. Check your internet connection, or use Print instead.");
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const PW = 612, PH = 792, M = 54, W = PW - M * 2;
+  const RED2 = [197, 5, 12], GREEN2 = [46, 125, 50], BLUE2 = [17, 85, 204], INK = [26, 26, 26], MUT = [90, 90, 90];
+  let y = M;
+
+  const ensure = h => { if (y + h > PH - M) { doc.addPage(); y = M; } };
+  const wrap = (txt, size, width) => { doc.setFontSize(size); return doc.splitTextToSize(txt, width); };
+
+  function heading(txt, size, color) {
+    ensure(size + 14);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(size);
+    doc.setTextColor(color[0], color[1], color[2]);
+    doc.text(txt, M, y);
+    y += size + 8;
+  }
+  function para(txt, size, color) {
+    const lines = wrap(txt, size, W);
+    ensure(lines.length * (size + 3) + 4);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(size);
+    doc.setTextColor(color[0], color[1], color[2]);
+    doc.text(lines, M, y);
+    y += lines.length * (size + 3) + 4;
+  }
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(24); doc.setTextColor(RED2[0],RED2[1],RED2[2]);
+  doc.text("Farm Tech Ready", M, y); y += 26;
+  doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+  doc.text("Technology readiness self-assessment results", M, y); y += 14;
+  doc.text(new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }), M, y); y += 24;
+
+  // Readiness Wheel image
+  try {
+    drawWheel();
+    const canvas = document.getElementById("wheel");
+    if (canvas && canvas.width > 0) {
+      const img = canvas.toDataURL("image/png");
+      const iw = 300, ih = 300;
+      ensure(ih + 10);
+      doc.addImage(img, "PNG", (PW - iw) / 2, y, iw, ih);
+      y += ih + 14;
+    }
+  } catch (e) { /* wheel unavailable, continue without it */ }
+
+  heading("Category results", 15, INK);
+  CATEGORIES.forEach((cat, ci) => {
+    const avg = catAverage(ci);
+    const fl = isFlagged(ci);
+    const pass = isComplete(ci) && avg !== null && avg > 3;
+    ensure(20);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11);
+    const c = fl ? RED2 : pass ? GREEN2 : INK;
+    doc.setTextColor(c[0],c[1],c[2]);
+    doc.text(cat.label, M, y);
+    const val = avg === null ? "-" : avg.toFixed(1);
+    const tag = fl ? "  (needs attention)" : pass ? "  (meets expectations)" : "";
+    doc.text(val + tag, M + 290, y);
+    y += 16;
+  });
+  y += 8;
+
+  heading("Your ratings", 15, INK);
+  CATEGORIES.forEach((cat, ci) => {
+    ensure(40);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+    const hc = isFlagged(ci) ? RED2 : GREEN2;
+    doc.setTextColor(hc[0],hc[1],hc[2]);
+    doc.text((ci + 1) + ". " + cat.label, M, y); y += 15;
+    cat.statements.forEach((st, si) => {
+      const v = scores[ci][si];
+      const lines = wrap(st, 9.5, W - 14);
+      ensure(lines.length * 12 + 14);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(INK[0],INK[1],INK[2]);
+      doc.text(lines, M + 14, y); y += lines.length * 12;
+      doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+      doc.text(v ? "Rated: " + v + " (" + SCALE[v - 1] + ")" : "Not rated", M + 14, y); y += 14;
+    });
+    y += 4;
+  });
+
+  const flags = CATEGORIES.map((c, i) => i).filter(i => isFlagged(i));
+  if (flags.length) {
+    doc.addPage(); y = M;
+    heading("Categories that need attention", 15, RED2);
+    para("Work through the guiding questions for each flagged category.", 10, MUT);
+    flags.forEach(ci => {
+      const cat = CATEGORIES[ci];
+      ensure(30);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.setTextColor(RED2[0],RED2[1],RED2[2]);
+      doc.text(cat.label + "  (average " + catAverage(ci).toFixed(1) + ")", M, y); y += 16;
+      cat.questions.forEach(q => {
+        const lines = wrap("\u2022  " + q, 9.5, W - 10);
+        ensure(lines.length * 12 + 2);
+        doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(INK[0],INK[1],INK[2]);
+        doc.text(lines, M + 10, y); y += lines.length * 12 + 2;
+      });
+      y += 10;
+    });
+  }
+
+  const answers = [...document.querySelectorAll(".reflect textarea")];
+  const labels = [...document.querySelectorAll(".reflect label")].map(l => l.textContent);
+  if (answers.some(t => t.value.trim())) {
+    ensure(60);
+    heading("Reflection notes", 15, INK);
+    answers.forEach((t, i) => {
+      if (!t.value.trim()) return;
+      const ql = wrap(labels[i], 10, W);
+      const al = wrap(t.value.trim(), 10, W - 10);
+      ensure(ql.length * 13 + al.length * 13 + 10);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(INK[0],INK[1],INK[2]);
+      doc.text(ql, M, y); y += ql.length * 13;
+      doc.setFont("helvetica", "normal"); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+      doc.text(al, M + 10, y); y += al.length * 13 + 8;
+    });
+  }
+
+  if (flags.length) {
+    doc.addPage(); y = M;
+    heading("Recommended Extension resources", 15, RED2);
+    para("Resources from UW-Madison Extension for your flagged categories.", 10, MUT);
+    flags.forEach(ci => {
+      const cat = CATEGORIES[ci];
+      ensure(26);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.setTextColor(RED2[0],RED2[1],RED2[2]);
+      doc.text(cat.label, M, y); y += 16;
+      (RESOURCES[cat.key] || []).forEach(r => {
+        const tl = wrap(r.t, 10.5, W - 10);
+        const dl = wrap(r.d, 9, W - 10);
+        ensure(tl.length * 13 + dl.length * 11 + 8);
+        doc.setFont("helvetica", "bold"); doc.setFontSize(10.5);
+        doc.setTextColor(BLUE2[0],BLUE2[1],BLUE2[2]);
+        doc.setDrawColor(BLUE2[0],BLUE2[1],BLUE2[2]);
+        doc.setLineWidth(0.75);
+        tl.forEach(ln => {
+          doc.textWithLink(ln, M + 10, y, { url: r.u });
+          const lw = doc.getTextWidth(ln);
+          doc.line(M + 10, y + 1.8, M + 10 + lw, y + 1.8);
+          y += 13;
+        });
+        doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+        doc.text(dl, M + 10, y); y += dl.length * 11 + 6;
+      });
+      y += 8;
+    });
+  }
+
+  ensure(40);
+  y = Math.max(y, PH - M - 30);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(MUT[0],MUT[1],MUT[2]);
+  doc.text(doc.splitTextToSize("Developed by the Investment in Tech and Automation Workgroup with the UW-Madison Division of Extension. farms.extension.wisc.edu/technology", W), M, y);
+
+  doc.save("Farm-Tech-Ready-results.pdf");
+}
+document.getElementById("pdfBtn").addEventListener("click", buildPdf);
+
+/* init */
+showStep(NOT_STARTED);
+</script>
+</body>
+</html>
