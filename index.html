@@ -859,7 +859,7 @@ function renderResources() {
     g.className = "card resgroup" + (flagged ? " flagged" : passing ? " passing" : "");
     let h = "<h3>" + cat.label;
     if (flagged) h += ' <span class="fl">Needs attention</span>';
-    if (passing) h += ' <span class="fl ok">Meets expectations</span>';
+    if (passing) h += ' <span class="fl ok">Ready</span>';
     if (avg !== null && isComplete(ci)) h += ' <span class="sc">Your average ' + avg.toFixed(1) + "</span>";
     h += "</h3>";
     h += '<p class="why">' + RES_WHY[cat.key] + "</p>";
@@ -912,7 +912,7 @@ function refresh() {
     const done = isComplete(ci);
     el.className = "cat-avg" + (done ? (avg <= 3 ? " flag" : " good") : "");
     const note = done
-      ? (avg <= 3 ? "Category average (needs attention)" : "Category average (meets expectations)")
+      ? (avg <= 3 ? "Category average (needs attention)" : "Category average (ready)")
       : "Category average (rate all three)";
     el.innerHTML = '<span class="note">' + note + "</span><b>" + (avg === null ? "&ndash;" : avg.toFixed(1)) + "</b>";
     const card = document.getElementById("cat-" + cat.key);
@@ -1330,7 +1330,7 @@ function buildPdf() {
     doc.setTextColor(c[0],c[1],c[2]);
     doc.text(cat.label, M, y);
     const val = avg === null ? "-" : avg.toFixed(1);
-    const tag = fl ? "  (needs attention)" : pass ? "  (meets expectations)" : "";
+    const tag = fl ? "  (needs attention)" : pass ? "  (ready)" : "";
     doc.text(val + tag, M + 290, y);
     y += 16;
   });
