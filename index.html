@@ -584,7 +584,7 @@ const CATEGORIES = [
       "How much training will staff need to use and maintain the equipment, and what safety training is required?",
       "How will the changes affect total payroll costs, and how much time and labor will it save?",
       "Are there user groups you can join?",
-      "Do you and your staff have the capacity to solve problems?"
+      "Do you and your staff like and have the capacity to solve problems?"
     ]
   },
   {
@@ -702,8 +702,8 @@ const RESOURCES = {
     BALANCING, WIEGEL, AUTOMATION_HUB
   ],
   stake: [
-    { t: "Ag Land Pricing and Contracts", u: "https://farms.extension.wisc.edu/article-topic/pricing-and-contracts/", d: "Contract terms and the fine print, including your data rights." },
-    { t: "Farm Succession Resources", u: "https://farms.extension.wisc.edu/topics/farm-succession/", d: "Family, ownership, and stakeholder communication." },
+    { t: "Ag Land Pricing and Contracts", u: "https://farms.extension.wisc.edu/article-topic/pricing-and-contracts/", d: "Contract terms and the fine print." },
+    { t: "Farm Succession Resources", u: "https://farms.extension.wisc.edu/article-topic/farm-succession-estate-planning", d: "Family, ownership, and stakeholder communication." },
     { t: "Policy, Markets and Marketing", u: "https://farms.extension.wisc.edu/topics/policy-markets-marketing/", d: "Regulatory and market context for your decision." },
     AMS_GLOSSARY
   ],
@@ -1113,6 +1113,23 @@ const WHEEL_LABELS = [
   ["Labor &", "Training"], ["Support"], ["Adaptability"], ["Stakeholder", "Mgmt"], ["Production"]
 ];
 
+/* Smallest edge margin at which no side label runs off the canvas.
+   Measured from the real rendered text, so it holds for any font or width. */
+function labelMargin(size) {
+  const n = WHEEL_LABELS.length, step2 = (Math.PI * 2) / n, start = -Math.PI / 2, pad = 4;
+  ctx.font = "700 12.5px 'Red Hat Text', sans-serif";
+  let need = 0;
+  for (let i = 0; i < n; i++) {
+    const c = Math.abs(Math.cos(start + i * step2));
+    if (c < 0.30) continue;
+    let w = 0;
+    WHEEL_LABELS[i].forEach(ln => { const t = ctx.measureText(ln).width; if (t > w) w = t; });
+    const m = size / 2 + 14 - (size / 2 - w - pad) / c;
+    if (m > need) need = m;
+  }
+  return need;
+}
+
 function describeWheel() {
   const parts = CATEGORIES.map((cat, i) => {
     const a = catAverage(i);
@@ -1136,7 +1153,7 @@ function drawWheel() {
   ctx.clearRect(0, 0, size, size);
 
   const cx = size / 2, cy = size / 2;
-  const R = size / 2 - Math.max(74, size * 0.205);
+  const R = size / 2 - Math.max(74, size * 0.205, labelMargin(size));
   const n = CATEGORIES.length;
   const step2 = (Math.PI * 2) / n;
   const start = -Math.PI / 2;
